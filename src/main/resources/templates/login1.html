@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Title</title>
+    <!-- Bootstrap core CSS -->
+    <link href="asserts/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/4.0.0/css/bootstrap.css}" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="asserts/css/signin.css" th:href="@{/asserts/css/signin.css}" rel="stylesheet">
+</head>
+<body class="text-center">
+<form class="form-signin" th:action="@{/localUser/login}" method="post">
+    <img class="mb-4" th:src="@{asserts/img/bootstrap-solid.svg}"
+         src="assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+    <h1 class="h3 mb-3 font-weight-normal">请登录</h1>
+    <label for="inputEmail" class="sr-only">用户名</label>
+    <input type="text" name="username" id="inputEmail" class="form-control" placeholder="用户名" >
+    <label for="inputPassword" class="sr-only">密码</label>
+    <input type="password" name="password" id="inputPassword" class="form-control" placeholder="密码">
+    <p style="color: red" th:text="${loginResult}" th:if="${not #strings.isEmpty(loginResult)}"></p>
+    <div class="checkbox mb-3">
+        <label>
+            <input type="checkbox" value="remember-me"> Remember me
+        </label>
+    </div>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
+    <p class="mt-5 mb-3 text-muted">&copy; 2020-2021</p>
+</form>
+
+</body>
+</html>

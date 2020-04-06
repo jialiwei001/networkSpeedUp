@@ -1,0 +1,30 @@
+server:
+  port: 8082
+
+spring:
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://127.0.0.1:3306/over6?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+#spring:
+#  datasource:
+#    username: abcd
+#    password: jiaoliwei1234
+#    url: jdbc:mysql://angrybird.top:3306/vpn2
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+     ddl-auto: update
+    show-sql: true
+  mvc:
+    date-format: yyyy-MM-dd
+logging:
+  level:
+   com.pingan: debug
+
+
+
+
+

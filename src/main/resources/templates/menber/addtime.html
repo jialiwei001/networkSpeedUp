@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)http://getbootstrap.com/docs/4.0/examples/dashboard/ -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<title>Dashboard Template for Bootstrap</title>
+		<!-- Bootstrap core CSS -->
+		<link href="asserts/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.0.0/css/bootstrap.css}" rel="stylesheet">
+
+		<!-- Custom styles for this template -->
+		<link href="asserts/css/dashboard.css" th:href="@{/asserts/css/dashboard.css}" rel="stylesheet">
+		<style type="text/css">
+			/* Chart.js */
+			
+			@-webkit-keyframes chartjs-render-animation {
+				from {
+					opacity: 0.99
+				}
+				to {
+					opacity: 1
+				}
+			}
+			
+			@keyframes chartjs-render-animation {
+				from {
+					opacity: 0.99
+				}
+				to {
+					opacity: 1
+				}
+			}
+			
+			.chartjs-render-monitor {
+				-webkit-animation: chartjs-render-animation 0.001s;
+				animation: chartjs-render-animation 0.001s;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--引入抽取的topbar-->
+		<!--模板名：会使用thymeleaf的前后缀配置规则进行解析-->
+		<div th:replace="commons/bar::topbar"></div>
+
+		<div class="container-fluid">
+			<div class="row">
+				<!--引入侧边栏-->
+				<div th:replace="commons/bar::#sidebar(activeUri='emps')"></div>
+
+				<main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+					<!--需要区分是员工修改还是添加；-->
+					<div  >
+						<!--发送put请求修改员工数据-->
+						<!--
+						1、SpringMVC中配置HiddenHttpMethodFilter;（SpringBoot自动配置好的）
+						2、页面创建一个post表单
+						3、创建一个input项，name="_method";值就是我们指定的请求方式
+						-->
+
+						<div class="form-group">
+							<label>会员名称</label>
+							<input name="username" id="phone0"  type="text" class="form-control" placeholder="zhangsan" th:value="${session.loginUser}">
+						</div>
+						<div class="form-group">
+							<label>用户手机</label>
+							<input name="phone" id="phone1"  type="text" class="form-control" placeholder="zhangsan" th:value="${oneMenber.phonenumber}">
+						</div>
+						<div class="form-group">
+							<label>用户邮箱</label>
+							<input name="email"  type="text" class="form-control" placeholder="zhangsan" th:value="${oneMenber.menberEmail}">
+						</div>
+						<div class="form-group">
+							<label>订阅地址</label>
+							<input name="subUrl" id="url1" type="text" class="form-control" placeholder="zhangsan" th:value="${oneMenber.subUrl}">
+						</div>
+						<div class="form-group">
+							<label>创建时间</label>
+							<input name="startTime" type="text" class="form-control" placeholder="zhangsan" th:value="${oneMenber.starttime}">
+						</div>
+						<div class="form-group">
+							<label>到期时间</label>
+							<input name="endTime" type="text" class="form-control" placeholder="zhangsan" th:value="${oneMenber.endtime}">
+						</div>
+						<div class="form-group">
+							<label>续费时间</label><br>
+							<select name="addTime1" style="width: 180px;" class="form-control" >
+								<option value="" disabled selected style='display:none;'></option>
+								<option>续费月卡</option>
+								<option>续费季卡</option>
+								<option>续费半年卡</option>
+								<option>续费年卡</option>
+							</select>
+						</div>
+
+						<button type="submit" class="btn btn-primary" onclick="addTime()">续费</button>
+					</div>
+				</main>
+			</div>
+		</div>
+
+		<!-- Bootstrap core JavaScript
+    ================================================== -->
+		<!-- Placed at the end of the document so the pages load faster -->
+		<script type="text/javascript" src="asserts/js/jquery-3.2.1.slim.min.js" th:src="@{/webjars/jquery/3.3.1/jquery.js}"></script>
+		<!--<script type="text/javascript" src="asserts/js/popper.min.js" th:src="@{/webjars/popper.js/1.11.1/dist/popper.js}"></script>-->
+		<script type="text/javascript" src="asserts/js/bootstrap.min.js" th:src="@{/webjars/bootstrap/4.0.0/js/bootstrap.js}"></script>
+
+		<!-- Icons -->
+		<script type="text/javascript" src="asserts/js/feather.min.js" th:src="@{/asserts/js/feather.min.js}"></script>
+		<script>
+
+            function addTime() {
+                var  url= "/menber/addtime"
+                var number1 = $("select").val();
+                var name = $("#phone1").val();
+                var username = $("#phone0").val();
+
+                $.post(url ,{"username":username,"phone":name,"type":number1,},function(data,status) {
+                    alert(data)
+                })
+            }
+
+			feather.replace()
+		</script>
+
+	</body>
+
+</html>
