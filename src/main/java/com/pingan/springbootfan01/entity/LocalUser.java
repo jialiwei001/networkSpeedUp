@@ -114,6 +114,6 @@ public class LocalUser {
 
     @Override
     public String toString() {
-        return "LocalUser{" + "id=" + id + ", username='" + username + '\'' + ", introducer='" + introducer + '\'' + ", email='" + email + '\'' + ", password='" + password + '\'' + ", createtime=" + createtime + ", mMemberSet=" + mMemberSet + ", mNotes=" + mNotes + '}';
+        return "LocalUser{" + "id=" + id + ", username='" + username + '\'' + ", introducer='" + introducer + '\'' + ", email='" + email + '\'' + ", password='" + password + '\'' + ", createtime=" + createtime +  '}';
     }
 }

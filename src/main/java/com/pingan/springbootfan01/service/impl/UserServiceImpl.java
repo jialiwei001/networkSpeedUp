@@ -4,6 +4,8 @@ import com.pingan.springbootfan01.dao.UserDao;
 import com.pingan.springbootfan01.entity.LocalUser;
 import com.pingan.springbootfan01.service.UserService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,14 +23,14 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
     private static final String TAG = "UserServiceImpl";
-
+    Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private UserDao mUserDao;
 
     public LocalUser findUser(String name){
 
         LocalUser localUser = mUserDao.findByUsername(name);
-        System.out.println("service 查询user :" + localUser);
+        logger.debug("---UserServiceImpl findUser find result localUser:{}",localUser);
 
         return localUser;
     }

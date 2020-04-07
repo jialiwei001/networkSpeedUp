@@ -62,7 +62,7 @@ public class MemberController {
     @Transactional
     public String deleteMenberAndNote(@PathVariable("id") int id,Model model){
         Member findresult = mMemberService.findOnebyId(id);
-        String result = mUserRegister.AddDays(findresult.getMenberEmail(), -100);
+        String result = mUserRegister.AddDays(findresult.getMenberEmail(), -366);
         if (result == null){
             Notes  byContent  = mNotesDao.findByContent(findresult.getPhonenumber());
             if (byContent != null){
