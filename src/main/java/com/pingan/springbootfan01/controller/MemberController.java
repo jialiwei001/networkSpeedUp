@@ -60,13 +60,19 @@ public class MemberController {
     //删除用户和计费记录
     @GetMapping("/menber/deletemenber/{id}")
     @Transactional
-    public String deleteMenberAndNote(@PathVariable("id") int id){
+    public String deleteMenberAndNote(@PathVariable("id") int id,Model model){
         Member findresult = mMemberService.findOnebyId(id);
-        Notes  byContent  = mNotesDao.findByContent(findresult.getPhonenumber());
-        if (byContent != null){
-            mNotesDao.deleteById(byContent.getId());
+        String result = mUserRegister.AddDays(findresult.getMenberEmail(), -100);
+        if (result == null){
+            Notes  byContent  = mNotesDao.findByContent(findresult.getPhonenumber());
+            if (byContent != null){
+                mNotesDao.deleteById(byContent.getId());
+            }
+            mMemberDao.deleteById(id);
+        }else {
+            System.out.println("---MemberController  deleteMenberAndNote  真实user表删除失败");
+            model.addAttribute("deletefail","user表删除失败,请重新尝试-"+result);
         }
-        mMemberDao.deleteById(id);
         return "redirect:/findUserMenbers";
     }
 

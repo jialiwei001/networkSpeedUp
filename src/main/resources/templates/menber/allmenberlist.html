@@ -113,6 +113,7 @@
                     <div style="width: 5px"></div>
                     <button type="submit" class="btn btn-success">查询</button>
                 </form>
+                <p style="color: red" th:text="${loginResult}" th:if="${not #strings.isEmpty(deletefail)}"></p>
             </div>
             <div style="height: 10px">
 
@@ -228,7 +229,10 @@
     <script>
         $(".deleteBtn").click(function () {
             //删除当前员工的
-            $("#deleteEmpForm").attr("action", $(this).attr("del_uri")).submit();
+            var flag = confirm("确定删除此项吗？")
+            if (flag){
+                $("#deleteEmpForm").attr("action", $(this).attr("del_uri")).submit();
+            }
             return false;
         });
     </script>
