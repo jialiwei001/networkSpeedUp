@@ -87,7 +87,7 @@ public class MemberController {
         model.addAttribute("menbers",memberSet);
         model.addAttribute("user",username);
 
-        return "/menber/list";
+        return "menber/list";
     }
 
 
@@ -104,7 +104,7 @@ public class MemberController {
         model.addAttribute("menbers",memberSet);
         model.addAttribute("user",username);
 
-        return "/menber/list";
+        return "menber/list";
     }
 
     //查询所有会员用户,可以不输入参数
@@ -123,7 +123,7 @@ public class MemberController {
         model.addAttribute("menbers",memberSet);
         model.addAttribute("user",username);
 
-        return "/menber/allmenberlist";
+        return "menber/allmenberlist";
     }
 
     //查询所有会员用户
@@ -143,7 +143,7 @@ public class MemberController {
         model.addAttribute("menbers",memberSet);
         model.addAttribute("user",username);
 
-        return "/menber/allmenberlist";
+        return "menber/allmenberlist";
     }
 
 
@@ -240,7 +240,7 @@ public class MemberController {
         Member oneMenber1 = mMemberService.findOnebyId(id);
         model.addAttribute("oneMenber",oneMenber1);
 
-        return "/menber/addtime";
+        return "menber/addtime";
     }
 
 

@@ -9,6 +9,7 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
 repositories {
+    //mavenLocal()
     mavenCentral()
 }
 
@@ -22,11 +23,37 @@ dependencies {
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
-
+    compile fileTree(dir:'libs',includes: ['*.jar'])
     compile 'org.webjars:bootstrap:4.0.0'
     compile 'org.webjars:jquery:3.3.1'
 }
 
 test {
     useJUnitPlatform()
+}
+//构建打包的配置
+jar {
+    //遍历依赖，追加到someStirng上
+    String someString = ''
+    configurations.runtime.each {someString = someString + " lib//"+it.name}
+    //指定项目清单
+    manifest {
+        attributes 'Main-Class': 'com.pingan.springbootfan01.SpringbootFan01Application' //指定启动类
+        attributes 'Class-Path': someString  //指定依赖
+    }
+}
+//指定编码类型
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+
+//拷贝jar ，把依赖都放到build/libs/lib中
+task copyJar(type:Copy){
+    from configurations.runtime
+    into ('build/libs/lib')
+}
+//构建一个自定义任务release , dependsOn 表示它依赖两个子任务 build 和 copyJar
+task release(dependsOn: [build,copyJar]){
+
 }

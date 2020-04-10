@@ -96,7 +96,7 @@ public class UserController {
 
         model.addAttribute("users", allLocalUser);
 
-        return "/supermenber/list";
+        return "supermenber/list";
     }
 
 
@@ -104,7 +104,7 @@ public class UserController {
     //去添加页面
     @GetMapping("/adduser")
     public String addUser(){
-        return "/supermenber/add";
+        return "supermenber/add";
     }
 
     //去修改页面
@@ -114,7 +114,7 @@ public class UserController {
         LocalUser one = mUserService.findOne(id);
         model.addAttribute("oneUser",one);
 
-        return "/supermenber/add";
+        return "supermenber/add";
     }
     //添加会员
     @PostMapping("/createuser")
@@ -210,7 +210,7 @@ public class UserController {
         model.addAttribute("xuquarter",xuquarter);
         model.addAttribute("xuhalf",xuhalf);
         model.addAttribute("xuyear",xuyear);
-        return "/count/countlist";
+        return "count/countlist";
     }
 
     @GetMapping("/user/report")
@@ -264,7 +264,7 @@ public class UserController {
         model.addAttribute("xuquarter",xuquarter);
         model.addAttribute("xuhalf",xuhalf);
         model.addAttribute("xuyear",xuyear);
-        return "/count/usercountlist";
+        return "count/usercountlist";
     }
 
 }
