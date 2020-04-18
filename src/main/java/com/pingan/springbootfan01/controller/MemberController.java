@@ -64,10 +64,10 @@ public class MemberController {
         Member findresult = mMemberService.findOnebyId(id);
         String result = mUserRegister.AddDays(findresult.getMenberEmail(), -366);
         if (result == null){
-            Notes  byContent  = mNotesDao.findByContent(findresult.getPhonenumber());
-            if (byContent != null){
-                mNotesDao.deleteById(byContent.getId());
-            }
+//            Notes  byContent  = mNotesDao.findByContent(findresult.getPhonenumber());
+//            if (byContent != null){
+//                mNotesDao.deleteById(byContent.getId());
+//            }
             mMemberDao.deleteById(id);
         }else {
             System.out.println("---MemberController  deleteMenberAndNote  真实user表删除失败");
@@ -157,6 +157,11 @@ public class MemberController {
         LocalUser localUser = mUserService.findUser(username);
         if (localUser == null){
             return "会员不存在,请重新登录";
+        }
+        //手机号重复不能创建
+        Member onebyPhone = mMemberService.findOnebyPhone(phone);
+        if (onebyPhone != null){
+            return "该用户已经创建，请勿重复创建";
         }
         Notes notes = new Notes();
         notes.setLocalUser(localUser);
