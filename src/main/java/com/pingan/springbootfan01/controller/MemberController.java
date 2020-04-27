@@ -159,7 +159,8 @@ public class MemberController {
             return "会员不存在,请重新登录";
         }
         //手机号重复不能创建
-        Member onebyPhone = mMemberService.findOnebyPhone(phone);
+        String phone1 = phone.trim();
+        Member onebyPhone = mMemberService.findOnebyPhone(phone1);
         if (onebyPhone != null){
             return "该用户已经创建，请勿重复创建";
         }
@@ -170,31 +171,31 @@ public class MemberController {
             days = 30;
             notes.setType("月卡");
             notes.setNumber(1);
-            notes.setContent(phone);
+            notes.setContent(phone1);
         }else if (type.equals("季卡")){
             days = 91;
             notes.setType("季卡");
             notes.setNumber(1);
-            notes.setContent(phone);
+            notes.setContent(phone1);
         }else if (type.equals("半年卡")){
             days = 182;
             notes.setType("半年卡");
             notes.setNumber(1);
-            notes.setContent(phone);
+            notes.setContent(phone1);
         }else if (type.equals("年卡")){
             days = 365;
             notes.setType("年卡");
             notes.setNumber(1);
-            notes.setContent(phone);
+            notes.setContent(phone1);
         }else if (type.equals("试用卡")){
             days = number;
             notes.setType("试用卡");
             notes.setNumber(number);
-            notes.setContent(phone);
+            notes.setContent(phone1);
         }else {
             return "卡类型匹配错误，请联系工作人员";
         }
-        String phone1 = phone;
+        //String phone1 = phone;
         String emial = UtilTools.autoEmail();
         String name = UtilTools.autoMenberName();
         String chatNumber = UtilTools.autoChatNumber();
