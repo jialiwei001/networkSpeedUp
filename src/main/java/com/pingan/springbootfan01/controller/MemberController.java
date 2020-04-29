@@ -100,7 +100,11 @@ public class MemberController {
         logger.debug("---MemberController menberlist mUserService.findUser result localUser:{}",
                      localUser);
 
-        Page<Member> memberSet = mMemberService.findMenbers(localUser,email,phone,type,startdate,enddate, pageNum, pageSize);
+        String phone1 = "";
+        if (phone != "" && phone != null){
+            phone1 = phone.trim();
+        }
+        Page<Member> memberSet = mMemberService.findMenbers(localUser,email,phone1,type,startdate,enddate, pageNum, pageSize);
         model.addAttribute("menbers",memberSet);
         model.addAttribute("user",username);
 
@@ -118,8 +122,11 @@ public class MemberController {
         List<LocalUser> allUser = mUserService.findAllUser();
         model.addAttribute("allUser",allUser);
         logger.debug("---查询前的参数为： username:{},email:{},phone:{},type:{},startdate:{},enddate:{},pageNum:{},pageSize:{}",username,email,phone,type,startdate,enddate,pageNum,pageSize);
-
-        Page<Member> memberSet = mMemberService.findMenbers(localUser,email,phone,type,startdate,enddate, pageNum, pageSize);
+        String phone1 = "";
+        if (phone != "" && phone != null){
+            phone1 = phone.trim();
+        }
+        Page<Member> memberSet = mMemberService.findMenbers(localUser,email,phone1,type,startdate,enddate, pageNum, pageSize);
         model.addAttribute("menbers",memberSet);
         model.addAttribute("user",username);
 
@@ -139,7 +146,11 @@ public class MemberController {
         model.addAttribute("allUser",allUser);
         logger.debug("---查询前的参数为： username:{},email:{},phone:{},type:{},startdate:{},enddate:{},pageNum:{},pageSize:{}",username,email,phone,type,startdate,enddate,pageNum,pageSize);
 
-        Page<Member> memberSet = mMemberService.findMenbers(localUser,email,phone,type,startdate,enddate, pageNum, pageSize);
+        String phone1 = "";
+        if (phone != "" && phone != null){
+            phone1 = phone.trim();
+        }
+        Page<Member> memberSet = mMemberService.findMenbers(localUser,email,phone1,type,startdate,enddate, pageNum, pageSize);
         model.addAttribute("menbers",memberSet);
         model.addAttribute("user",username);
 
