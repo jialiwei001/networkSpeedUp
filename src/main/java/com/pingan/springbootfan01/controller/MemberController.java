@@ -78,7 +78,7 @@ public class MemberController {
 
     //分页查询去用户列表页
     @GetMapping("/menber")
-    public String menberlist(@RequestParam("username")String username, Model model,@RequestParam(value = "pageNum", defaultValue = "0") int pageNum, @RequestParam(value = "pageSize", defaultValue = "20") int pageSize){
+    public String menberlist(@RequestParam("username")String username, Model model,@RequestParam(value = "pageNum", defaultValue = "0") int pageNum, @RequestParam(value = "pageSize", defaultValue = "40") int pageSize){
         LocalUser localUser = mUserService.findUser(username);
         logger.debug("---MemberController menberlist mUserService.findUser result localUser:{}",
                      localUser);
@@ -94,7 +94,7 @@ public class MemberController {
     //按条件查询用户
     @PostMapping("/findmenbers")
     public String findMenber(@RequestParam("username")String username,  @RequestParam(value = "email",required = false)String email, @RequestParam(value = "phone",required = false)String phone,@RequestParam(value = "typename",required = false) String type,
-                             @RequestParam(value = "startdate",required = false)String startdate, @RequestParam(value = "enddate", required = false)String enddate, Model model, @RequestParam(value = "pageNum", defaultValue = "0") int pageNum, @RequestParam(value = "pageSize", defaultValue = "20") int pageSize){
+                             @RequestParam(value = "startdate",required = false)String startdate, @RequestParam(value = "enddate", required = false)String enddate, Model model, @RequestParam(value = "pageNum", defaultValue = "0") int pageNum, @RequestParam(value = "pageSize", defaultValue = "40") int pageSize){
         logger.debug("---MemberController findMenber recive param username:{},type:{},email:{},phone:{},startdate:{},enddate:{}",username,type,email,phone,startdate,enddate);
         LocalUser localUser = mUserService.findUser(username);
         logger.debug("---MemberController menberlist mUserService.findUser result localUser:{}",
@@ -114,7 +114,7 @@ public class MemberController {
     //查询所有会员用户,可以不输入参数
     @GetMapping("/findUserMenbers")
     public String findUserMenbers(@RequestParam(value = "username",required = false)String username,  @RequestParam(value = "email",required = false)String email, @RequestParam(value = "phone",required = false)String phone,@RequestParam(value = "typename",required = false) String type,
-                             @RequestParam(value = "startdate",required = false)String startdate, @RequestParam(value = "enddate", required = false)String enddate, Model model, @RequestParam(value = "pageNum", defaultValue = "0") int pageNum, @RequestParam(value = "pageSize", defaultValue = "20") int pageSize){
+                             @RequestParam(value = "startdate",required = false)String startdate, @RequestParam(value = "enddate", required = false)String enddate, Model model, @RequestParam(value = "pageNum", defaultValue = "0") int pageNum, @RequestParam(value = "pageSize", defaultValue = "40") int pageSize){
         logger.debug("---MemberController findUserMenbers recive param username:{},email:{},phone:{},type:{},startdate:{},enddate:{},pageNum:{},pageSize:{}",username,email,phone,type,startdate,enddate,pageNum,pageSize);
         LocalUser localUser = mUserService.findUser(username);
         logger.debug("---MemberController menberlist mUserService.findUser result localUser:{}",
