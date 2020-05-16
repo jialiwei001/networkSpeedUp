@@ -70,7 +70,7 @@
 							</thead>
 							<tbody>
 								<tr th:each="localUser:${users}">
-									<td th:text="${localUser.id}"></td>
+									<td >[[${localUserStat.index+1}]]</td>
 									<td>[[${localUser.username}]]</td>
 									<td th:text="${localUser.password}"></td>
 									<td th:text="${localUser.email}"></td>

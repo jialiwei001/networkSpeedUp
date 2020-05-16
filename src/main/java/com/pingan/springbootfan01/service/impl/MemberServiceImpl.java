@@ -125,10 +125,10 @@ public class MemberServiceImpl implements MemberService {
                     predicates.add(criteriaBuilder.equal(root.get("type"),type));
                 }
                 if (start != "" && start != null){
-                    predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("starttime").as(String.class),start));
+                    predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("endtime").as(String.class),start));
                 }
                 if (end != "" && end != null){
-                    predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("starttime").as(String.class),end));
+                    predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("endtime").as(String.class),end));
                 }
                 return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
             }

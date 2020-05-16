@@ -94,7 +94,7 @@ public class MemberController {
     //按条件查询用户
     @PostMapping("/findmenbers")
     public String findMenber(@RequestParam("username")String username,  @RequestParam(value = "email",required = false)String email, @RequestParam(value = "phone",required = false)String phone,@RequestParam(value = "typename",required = false) String type,
-                             @RequestParam(value = "startdate",required = false)String startdate, @RequestParam(value = "enddate", required = false)String enddate, Model model, @RequestParam(value = "pageNum", defaultValue = "0") int pageNum, @RequestParam(value = "pageSize", defaultValue = "40") int pageSize){
+                             @RequestParam(value = "startdate",required = false)String startdate, @RequestParam(value = "enddate", required = false)String enddate, Model model, @RequestParam(value = "pageNum", defaultValue = "0") int pageNum, @RequestParam(value = "pageSize", defaultValue = "50") int pageSize){
         logger.debug("---MemberController findMenber recive param username:{},type:{},email:{},phone:{},startdate:{},enddate:{}",username,type,email,phone,startdate,enddate);
         LocalUser localUser = mUserService.findUser(username);
         logger.debug("---MemberController menberlist mUserService.findUser result localUser:{}",
@@ -114,7 +114,7 @@ public class MemberController {
     //查询所有会员用户,可以不输入参数
     @GetMapping("/findUserMenbers")
     public String findUserMenbers(@RequestParam(value = "username",required = false)String username,  @RequestParam(value = "email",required = false)String email, @RequestParam(value = "phone",required = false)String phone,@RequestParam(value = "typename",required = false) String type,
-                             @RequestParam(value = "startdate",required = false)String startdate, @RequestParam(value = "enddate", required = false)String enddate, Model model, @RequestParam(value = "pageNum", defaultValue = "0") int pageNum, @RequestParam(value = "pageSize", defaultValue = "40") int pageSize){
+                             @RequestParam(value = "startdate",required = false)String startdate, @RequestParam(value = "enddate", required = false)String enddate, Model model, @RequestParam(value = "pageNum", defaultValue = "0") int pageNum, @RequestParam(value = "pageSize", defaultValue = "50") int pageSize){
         logger.debug("---MemberController findUserMenbers recive param username:{},email:{},phone:{},type:{},startdate:{},enddate:{},pageNum:{},pageSize:{}",username,email,phone,type,startdate,enddate,pageNum,pageSize);
         LocalUser localUser = mUserService.findUser(username);
         logger.debug("---MemberController menberlist mUserService.findUser result localUser:{}",
@@ -136,7 +136,7 @@ public class MemberController {
     //查询所有会员用户
     @PostMapping("/findUserMenbers2")
     public String findUserMenbers2(@RequestParam(value = "username",required = false)String username,  @RequestParam(value = "email",required = false)String email, @RequestParam(value = "phone",required = false)String phone,@RequestParam(value = "typename",required = false) String type,
-                                  @RequestParam(value = "startdate",required = false)String startdate, @RequestParam(value = "enddate", required = false)String enddate, Model model, @RequestParam(value = "pageNum", defaultValue = "0") int pageNum, @RequestParam(value = "pageSize", defaultValue = "20") int pageSize){
+                                  @RequestParam(value = "startdate",required = false)String startdate, @RequestParam(value = "enddate", required = false)String enddate, Model model, @RequestParam(value = "pageNum", defaultValue = "0") int pageNum, @RequestParam(value = "pageSize", defaultValue = "50") int pageSize){
         logger.debug("---MemberController findUserMenbers recive param username:{},email:{},phone:{},type:{},startdate:{},enddate:{},pageNum:{},pageSize:{}",username,email,phone,type,startdate,enddate,pageNum,pageSize);
         LocalUser localUser = mUserService.findUser(username);
         logger.debug("---MemberController menberlist mUserService.findUser result localUser:{}",
@@ -207,11 +207,12 @@ public class MemberController {
             return "卡类型匹配错误，请联系工作人员";
         }
         //String phone1 = phone;
-        String emial = UtilTools.autoEmail();
+        String email = phone+"@qq.com";
+        //String emial = UtilTools.autoEmail();
         String name = UtilTools.autoMenberName();
         String chatNumber = UtilTools.autoChatNumber();
         //String createResult = UtilTools.createUser(emial, name, chatNumber, days);
-        String createResult = mUserRegister.regist(emial, name, chatNumber, days);
+        String createResult = mUserRegister.regist(email, name, chatNumber, days);
         if (!createResult.equals("1")){
             //创建用户
             Member member = new Member();
@@ -220,7 +221,7 @@ public class MemberController {
             //设置密码
             member.setPassword("abcd1234");
             //设置邮箱
-            member.setMenberEmail(emial);
+            member.setMenberEmail(email);
             //设置手机
             member.setPhonenumber(phone1);
             //设置订阅地址
@@ -263,7 +264,7 @@ public class MemberController {
 
 
 
-    //续费方法
+    //普通续费方法
     @PostMapping("/menber/addtime")
     @ResponseBody
     @Transactional
@@ -278,7 +279,7 @@ public class MemberController {
         //查找用户
         Member oneMenber = mMemberService.findOnebyPhone(phone);
         if (oneMenber == null){
-            return "查找用户失败,请重新尝试";
+            return "查找用户失败,请输入正确用户";
         }
         Notes notes = new Notes();
         notes.setLocalUser(localUser);
@@ -324,6 +325,63 @@ public class MemberController {
         notes.setCreateTime(new Date());
         mNotesDao.save(notes);
         return "续费成功~~~";
+
+    }
+
+
+
+    //admin按天续费方法
+    @PostMapping("/menber/addtimeDay")
+    @ResponseBody
+    @Transactional
+    public String addTimeDay(String username,String phone,@RequestParam(value = "time",required = false,defaultValue = "0")int time,Map<String,Object> map)
+            throws InterruptedException
+    {
+        logger.debug("---MemberController  addTime rceive param username:{}, phone:{},days:{}",username,phone,time);
+        LocalUser localUser = mUserService.findUser(username);
+        if (localUser == null){
+            return "会员不存在,请重新登录";
+        }
+        if (!localUser.getUsername().equals("admin")){
+            return "会员不是admin账号，无权加时间";
+        }
+        //查找用户
+        Member oneMenber = mMemberService.findOnebyPhone(phone);
+        if (oneMenber == null){
+            return "查找用户失败,请输入正确用户";
+        }
+        if (time == 0 || time > 1000){
+            return "请输入正确天数";
+        }
+        /*if (!UtilTools.isNumeric(time)){
+            return "收到天数为小数，请输入整数";
+        }*/
+        Notes notes = new Notes();
+        notes.setLocalUser(localUser);
+        int days = 0;
+        days = time;
+        notes.setType("续时【"+time+"】天");
+        notes.setNumber(1);
+        notes.setContent(phone);
+
+        //String result = UtilTools.addtime1(oneMenber.getPhonenumber(), days);
+        String result  = mUserRegister.AddDays(oneMenber.getMenberEmail(), days);
+        if (result != null){         //result != null
+            return "续费失败，请重新续费";
+        }
+        Date endtime = oneMenber.getEndtime();
+        //延长时间
+        Calendar instance = Calendar.getInstance();
+        instance.setTime(endtime);
+        instance.add(Calendar.DAY_OF_MONTH,days);
+        //设置结束时间
+        oneMenber.setEndtime(instance.getTime());
+
+        Member addResult = mMemberService.addMember(oneMenber);
+        oneMenber.setAmount(oneMenber.getAmount()+1);
+        notes.setCreateTime(new Date());
+        mNotesDao.save(notes);
+        return "续时成功~~~";
 
     }
 //

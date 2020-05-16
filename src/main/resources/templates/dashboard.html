@@ -143,25 +143,18 @@
                             <button type="button" class="btn btn-lg btn-block btn-primary" onclick="createTest()">创建试用卡</button>
                         </div>
                     </div>
-                    <div class="card mb-4 shadow-sm">
+                    <div class="card mb-4 shadow-sm" >
                         <div class="card-header">
-                            <h4 class="my-0 font-weight-normal">用户续费</h4>
+                            <h4 class="my-0 font-weight-normal">按天续费</h4>
                         </div>
                         <div class="card-body">
-                            <h1 class="card-title pricing-card-title">¥30 <small class="text-muted">/月</small></h1>
+                            <h1 class="card-title pricing-card-title">¥1 <small class="text-muted">/天</small></h1>
                             <ul class="list-unstyled mt-3 mb-4">
                                 <li>
                                     手机：<input type="text" id="phoneid6"  name="username" placeholder="请输入手机号" >
                                 </li>
                                 <li>
-                                    类型：
-                                    <select name="addTime1" style="width: 145px;" class="" >
-                                        <option value="" disabled selected style='display:none;'></option>
-                                        <option>续费月卡</option>
-                                        <option>续费季卡</option>
-                                        <option>续费半年卡</option>
-                                        <option>续费年卡</option>
-                                    </select>
+                                    天数：<input type="text" id="time6"  name="month" placeholder="请输入天数">
                                 </li>
                                 <li>按天续费</li>
                             </ul>
@@ -248,12 +241,12 @@
     }
 
     function addMoney() {
-        var  url= "/menber/addtime"
-        var dayNumber = $("select").val();
+        var  url= "/menber/addtimeDay"
+        var dayNumber = $("#time6").val();
         var phone = $("#phoneid6").val();
         var username = $("#iduser").val();
 
-        $.post(url ,{"username":username,"phone":phone,"subUrl":"","type":dayNumber,},function(data,status) {
+        $.post(url ,{"username":username,"phone":phone,"time":dayNumber,},function(data,status) {
             alert(data)
         })
     }

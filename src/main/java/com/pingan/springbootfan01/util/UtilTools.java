@@ -1,6 +1,7 @@
 package com.pingan.springbootfan01.util;
 
 import java.util.Date;
+import java.util.regex.Pattern;
 
 /*
  *  @项目名：  springboot-fan01
@@ -34,6 +35,12 @@ public class UtilTools {
 
     public static String createUser(String email,String name,String charNumber ,int days){
         return "0i2R7cqifDKyzPE3";
+    }
+
+    public static boolean isNumeric(int time){
+        String str = Integer.toString(time);
+        Pattern pattern = Pattern.compile("[0-9]*");
+        return pattern.matcher(str).matches();
     }
 
     public static String addtime1(String email,int days){
