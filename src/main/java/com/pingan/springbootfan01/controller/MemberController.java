@@ -316,6 +316,13 @@ public class MemberController {
         //延长时间
         Calendar instance = Calendar.getInstance();
         instance.setTime(endtime);
+
+        Calendar crruentTime = Calendar.getInstance();
+        crruentTime.setTime(new Date());
+        if (instance.before(crruentTime)){
+            instance.setTime(new Date());
+        }
+
         instance.add(Calendar.DAY_OF_MONTH,days);
         //设置结束时间
         oneMenber.setEndtime(instance.getTime());
