@@ -27,7 +27,7 @@ spring:
     #最大活跃数
     maxActive: 20
     #初始化数量
-    initialSize: 1
+    initialSize: 3
     #最大连接等待时间
     maxWait: 60000
     #打开PSCache,并且指定每个连接PSCache的大小
