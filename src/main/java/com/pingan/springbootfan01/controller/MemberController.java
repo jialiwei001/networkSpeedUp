@@ -317,6 +317,7 @@ public class MemberController {
         Calendar instance = Calendar.getInstance();
         instance.setTime(endtime);
 
+        //判断用户到期时间是否小于当前时间，如果小于，从当前时间开始计算添加时间
         Calendar crruentTime = Calendar.getInstance();
         crruentTime.setTime(new Date());
         if (instance.before(crruentTime)){

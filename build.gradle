@@ -26,6 +26,10 @@ dependencies {
     compile fileTree(dir:'libs',includes: ['*.jar'])
     compile 'org.webjars:bootstrap:4.0.0'
     compile 'org.webjars:jquery:3.3.1'
+
+    // https://mvnrepository.com/artifact/com.alibaba/druid
+    compile group: 'com.alibaba', name: 'druid', version: '1.0.31'
+
 }
 
 test {
