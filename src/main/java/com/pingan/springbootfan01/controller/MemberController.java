@@ -1,5 +1,6 @@
 package com.pingan.springbootfan01.controller;
 
+import com.pingan.springbootfan01.common.LocalLock;
 import com.pingan.springbootfan01.dao.MemberDao;
 import com.pingan.springbootfan01.dao.NotesDao;
 import com.pingan.springbootfan01.entity.LocalUser;
@@ -159,6 +160,7 @@ public class MemberController {
 
 
     //创建卡
+    @LocalLock(key = "book:arg[1]")
     @PostMapping("/localUser/createMonth")
     @ResponseBody
     @Transactional
@@ -265,6 +267,7 @@ public class MemberController {
 
 
     //普通续费方法
+    @LocalLock(key = "book:arg[1]")
     @PostMapping("/menber/addtime")
     @ResponseBody
     @Transactional
@@ -339,6 +342,7 @@ public class MemberController {
 
 
     //admin按天续费方法
+    @LocalLock(key = "book:arg[1]")
     @PostMapping("/menber/addtimeDay")
     @ResponseBody
     @Transactional
@@ -391,6 +395,13 @@ public class MemberController {
         mNotesDao.save(notes);
         return "续时成功~~~";
 
+    }
+
+    @LocalLock(key = "book:arg[0]")
+    @GetMapping("/testSubmit")
+    public String testSubmit(@RequestParam String token){
+        System.out.println("收到了请求");
+        return "success-"+token;
     }
 //
 //    //创建季卡
