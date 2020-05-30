@@ -70,17 +70,11 @@
                                id="exampleInputUser" th:value="${user}">
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputEmail2">邮箱: </label>
-                        <input type="email" name="email" class="form-control"
-                               id="exampleInputEmail2" placeholder="请输入邮箱">
-                    </div>
-                    <div style="width: 5px"></div>
-                    <div class="form-group">
                         <label for="exampleInputEmail2">手机号: </label>
                         <input type="text" name="phone" class="form-control" id="exampleInputPhone"
                                placeholder="请输入手机号">
                     </div>
-                    <div style="width: 5px"></div>
+                    <div style="width: 10px"></div>
                     <div class="form-group">
                         <label for="exampleInputEmail2">会员类型: </label>
                         <select name="typename" style="width: 170px;" class="form-control" >
@@ -92,17 +86,23 @@
                             <option>年卡</option>
                         </select>
                     </div>
-                    <div style="width: 5px"></div>
+                    <div style="width: 10px"></div>
                     <div class="form-group">
                         <label for="exampleInputEmail2">开始时间: </label>
                         <input type="date" name="startdate" class="form-control"
                                id="examplestarttime" placeholder="请选择开始时间">
                     </div>
-                    <div style="width: 5px"></div>
+                    <div style="width: 10px"></div>
                     <div class="form-group">
                         <label for="exampleInputEmail2">结束时间: </label>
                         <input type="date" name="enddate" class="form-control"
                                id="exampleEndtime" placeholder="请选择结束时间">
+                    </div>
+                    <div style="width: 10px"></div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail2">订阅地址: </label>
+                        <input type="text" name="urlAdress" style="width: 480px"  class="form-control"
+                               id="exampleInputEmail2" placeholder="请输入订阅地址">
                     </div>
                     <div style="width: 1px"></div>
                     <button type="submit" class="btn btn-success">查询</button>

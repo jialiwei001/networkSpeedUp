@@ -87,7 +87,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Page<Member> findMenbers(LocalUser localUser,
-                                String email,
+                                String urlAdress,
                                 String phone,
                                 String type,
                                 String start,
@@ -95,7 +95,7 @@ public class MemberServiceImpl implements MemberService {
                                 int pageNum,
                                 int pagesize)
     {
-        logger.debug("---MemberServiceImpl findMenbers method recive param localUser:{} email:{},phone:{},type:{},startdate:{},enddate:{},pageNum:{},pagesize:{}",localUser,email,phone,type,start,end,pageNum,pagesize);
+        logger.debug("---MemberServiceImpl findMenbers method recive param localUser:{} urlAdress:{},phone:{},type:{},startdate:{},enddate:{},pageNum:{},pagesize:{}",localUser,urlAdress,phone,type,start,end,pageNum,pagesize);
         PageRequest  page = PageRequest.of(pageNum, pagesize);
 
 //        if (localUser == null){
@@ -115,11 +115,11 @@ public class MemberServiceImpl implements MemberService {
                 if (localUser!=null) {
                     predicates.add(criteriaBuilder.equal(root.get("mLocalUser"), localUser));
                 }
-                if (email != "" && email != null){
-                    predicates.add(criteriaBuilder.equal(root.get("menberEmail"),email));
-                }
                 if (phone != "" && phone != null){
                     predicates.add(criteriaBuilder.equal(root.get("phonenumber"),phone));
+                }
+                if (urlAdress != "" && urlAdress != null){
+                    predicates.add(criteriaBuilder.equal(root.get("subUrl"),urlAdress));
                 }
                 if (type != "" && type != null){
                     predicates.add(criteriaBuilder.equal(root.get("type"),type));
@@ -135,6 +135,19 @@ public class MemberServiceImpl implements MemberService {
         };
         //Optional<LocalUser> user = mUserDao.findById(1);
         Page<Member> allMenber = mMemberDao.findAll(specification, page);
+        //根据已经试用时间调整显示用户类型
+        allMenber.forEach(member -> {
+            Long usedData = (member.getEndtime().getTime() - member.getStarttime().getTime())/(24*60*60*1000);
+            if (usedData >= 30 && usedData < 90){
+                member.setType("月卡");
+            }else if (usedData >= 90 && usedData < 180){
+                member.setType("季卡");
+            }else if (usedData >= 180 && usedData < 365){
+                member.setType("半年卡");
+            }else if (usedData >= 365){
+                member.setType("年卡");
+            }
+        });
         logger.info("根据指定会员查询到的分页用户为：" + allMenber);
 
         return allMenber;
