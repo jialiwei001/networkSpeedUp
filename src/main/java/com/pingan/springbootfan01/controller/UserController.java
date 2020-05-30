@@ -142,15 +142,16 @@ public class UserController {
         logger.debug("---UserController deleteAllNote param username:{}",username);
         LocalUser user = mUserService.findUser(username);
 
-        if (user== null){
-
-        }
-        String phone = "";
-        String start = "";
-        String end = "";
-        List<Notes> notes = mNotesService.ifFindAllNote(user,phone,start,end);
-        for (Notes note : notes){
-            mNotesDao.deleteById(note.getId());
+        if (user != null){
+            String phone = "";
+            String start = "";
+            String end = "";
+            List<Notes> notes = mNotesService.ifFindAllNote(user,phone,start,end);
+            for (Notes note : notes){
+                mNotesDao.deleteById(note.getId());
+            }
+        }else {
+            logger.debug("---UserController deleteAllNote 删除异常，未找到user用户");
         }
         return "redirect:/report";
     }
