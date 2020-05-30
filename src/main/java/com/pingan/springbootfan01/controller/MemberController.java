@@ -79,7 +79,7 @@ public class MemberController {
 
     //分页查询去用户列表页
     @GetMapping("/menber")
-    public String menberlist(@RequestParam("username")String username, Model model,@RequestParam(value = "pageNum", defaultValue = "0") int pageNum, @RequestParam(value = "pageSize", defaultValue = "40") int pageSize){
+    public String menberlist(@RequestParam("username")String username, Model model,@RequestParam(value = "pageNum", defaultValue = "0") int pageNum, @RequestParam(value = "pageSize", defaultValue = "50") int pageSize){
         LocalUser localUser = mUserService.findUser(username);
         logger.debug("---MemberController menberlist mUserService.findUser result localUser:{}",
                      localUser);
