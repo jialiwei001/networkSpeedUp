@@ -1,5 +1,7 @@
 package com.pingan.springbootfan01.util;
 
+import com.pingan.springbootfan01.entity.Member;
+
 import java.util.Date;
 import java.util.regex.Pattern;
 
@@ -47,4 +49,18 @@ public class UtilTools {
         return "0i2R7cqifDKyzPE3";
     }
 
+
+    public static void fixUserType(Member oneMenber){
+        //续费后更改卡类型
+        Long usedData = (oneMenber.getEndtime().getTime() - oneMenber.getStarttime().getTime())/(24*60*60*1000);
+        if (usedData >= 30 && usedData < 90){
+            oneMenber.setType("月卡");
+        }else if (usedData >= 90 && usedData < 180){
+            oneMenber.setType("季卡");
+        }else if (usedData >= 180 && usedData < 365){
+            oneMenber.setType("半年卡");
+        }else if (usedData >= 365){
+            oneMenber.setType("年卡");
+        }
+    }
 }

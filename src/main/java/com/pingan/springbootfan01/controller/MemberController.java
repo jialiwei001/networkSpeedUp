@@ -295,8 +295,6 @@ public class MemberController {
     }
 
 
-
-
     //普通续费方法
     @LocalLock(key = "book:arg[1]")
     @PostMapping("/menber/addtime")
@@ -362,18 +360,9 @@ public class MemberController {
         //设置结束时间
         oneMenber.setEndtime(instance.getTime());
         //续费后更改卡类型
-        Long usedData = (oneMenber.getEndtime().getTime() - oneMenber.getStarttime().getTime())/(24*60*60*1000);
-        if (usedData >= 30 && usedData < 90){
-            oneMenber.setType("月卡");
-        }else if (usedData >= 90 && usedData < 180){
-            oneMenber.setType("季卡");
-        }else if (usedData >= 180 && usedData < 365){
-            oneMenber.setType("半年卡");
-        }else if (usedData >= 365){
-            oneMenber.setType("年卡");
-        }
-        Member addResult = mMemberService.addMember(oneMenber);
+        UtilTools.fixUserType(oneMenber);
         oneMenber.setAmount(oneMenber.getAmount()+1);
+        Member addResult = mMemberService.addMember(oneMenber);
         notes.setCreateTime(new Date());
         mNotesDao.save(notes);
         return "续费成功~~~";
@@ -430,11 +419,48 @@ public class MemberController {
         //设置结束时间
         oneMenber.setEndtime(instance.getTime());
 
-        Member addResult = mMemberService.addMember(oneMenber);
+        //续费后更改卡类型
+        UtilTools.fixUserType(oneMenber);
         oneMenber.setAmount(oneMenber.getAmount()+1);
+        Member addResult = mMemberService.addMember(oneMenber);
         notes.setCreateTime(new Date());
         mNotesDao.save(notes);
         return "续时成功~~~";
+
+    }
+
+
+    @PostMapping("/menber/editInfo")
+    public String editInfo(Integer id,String phone,String email,Model model)
+    {
+        logger.debug("---MemberController editInfo rceive param id:{}, phone:{},email:{}",
+                     id,
+                     phone,
+                     email);
+        //查找用户
+        Member oneMenber = mMemberService.findOnebyId(id);
+        if (oneMenber == null) {
+            return "没有查找到用户";
+        }
+        Member oneMenber2 = mMemberService.findOnebyPhone(phone);
+        if (oneMenber2 == null){
+            String phone1 = "";
+            if (phone != "" && phone != null){
+                phone1 = phone.trim();
+                oneMenber.setPhonenumber(phone1);
+            }
+            String email1 = "";
+            if (email != "" && email != null){
+                email1 = email.trim();
+                oneMenber.setMenberEmail(email1);
+            }
+        }else {
+            logger.debug("---MemberController editInfo 手机号被占用");
+        }
+        Member addResult = mMemberService.addMember(oneMenber);
+        model.addAttribute("oneMenber",addResult);
+        logger.debug("---MemberController editInfo execution complete");
+        return "menber/addtime";
 
     }
 
@@ -444,97 +470,6 @@ public class MemberController {
         System.out.println("收到了请求");
         return "success-"+token;
     }
-//
-//    //创建季卡
-//    @PostMapping("/localUser/createQuarter")
-//    @ResponseBody
-//    public String createQuarterMember(String username,String phone){
-//        logger.debug("---MemberController  createQuarterMember rceive param username:{},phone:{}",username,phone);
-//        //先设置他的user
-//        LocalUser localUser = mUserService.findUser(username);
-//
-//        Member member = new Member();
-//        member.setUsername(phone);
-//        member.setPassword("12345678");
-//        member.setMenberEmail(UtilTools.autoEmail());
-//        member.setPhonenumber(phone);
-//        member.setAmount(1);
-//        member.setType("季卡");
-//        //获取当前时间
-//        Date cureTime = new Date();
-//        member.setStarttime(cureTime);
-//        //时间加一个月
-//        Calendar instance = Calendar.getInstance();
-//        instance.setTime(cureTime);
-//        instance.add(Calendar.MONTH,3);
-//        member.setEndtime(instance.getTime());
-//        member.setLocalUser(localUser);
-//
-//        Member addResult = mMemberService.addMember(member);
-//        return addResult.toString2();
-//
-//    }
-//
-//    //创建季卡
-//    @PostMapping("/localUser/createHalfYear")
-//    @ResponseBody
-//    public String createHalfYear(String username,String phone){
-//        logger.debug("---MemberController  createYearMember rceive param username:{},phone:{}",username,phone);
-//        //先设置他的user
-//        LocalUser localUser = mUserService.findUser(username);
-//
-//        Member member = new Member();
-//        member.setUsername(phone);
-//        member.setPassword("123456");
-//        member.setMenberEmail(UtilTools.autoEmail());
-//        member.setPhonenumber(phone);
-//        member.setAmount(1);
-//        member.setType("半年卡");
-//        //获取当前时间
-//        Date cureTime = new Date();
-//        member.setStarttime(cureTime);
-//        //时间加一个月
-//        Calendar instance = Calendar.getInstance();
-//        instance.setTime(cureTime);
-//        instance.add(Calendar.MONTH,6);
-//        member.setEndtime(instance.getTime());
-//        member.setLocalUser(localUser);
-//
-//        Member addResult = mMemberService.addMember(member);
-//        return addResult.toString2();
-//
-//    }
-//
-//    //创建季卡
-//    @PostMapping("/localUser/createYear")
-//    @ResponseBody
-//    public String createYearMember(String username,String phone){
-//        logger.debug("---MemberController  createYearMember rceive param username:{},phone:{}",username,phone);
-//        //先设置他的user
-//        LocalUser localUser = mUserService.findUser(username);
-//
-//        Member member = new Member();
-//        member.setUsername(phone);
-//        member.setPassword("123456");
-//        member.setMenberEmail(UtilTools.autoEmail());
-//        member.setPhonenumber(phone);
-//        member.setAmount(1);
-//        member.setType("年卡");
-//        //获取当前时间
-//        Date cureTime = new Date();
-//        member.setStarttime(cureTime);
-//        //时间加一个月
-//        Calendar instance = Calendar.getInstance();
-//        instance.setTime(cureTime);
-//        instance.add(Calendar.YEAR,1);
-//        member.setEndtime(instance.getTime());
-//        member.setLocalUser(localUser);
-//
-//        Member addResult = mMemberService.addMember(member);
-//        return addResult.toString2();
-//
-//    }
-
 
 
 

@@ -4,6 +4,7 @@ import com.pingan.springbootfan01.dao.MemberDao;
 import com.pingan.springbootfan01.entity.LocalUser;
 import com.pingan.springbootfan01.entity.Member;
 import com.pingan.springbootfan01.service.MemberService;
+import com.pingan.springbootfan01.util.UtilTools;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -137,16 +138,7 @@ public class MemberServiceImpl implements MemberService {
         Page<Member> allMenber = mMemberDao.findAll(specification, page);
         //根据已经试用时间调整显示用户类型
         allMenber.forEach(member -> {
-            Long usedData = (member.getEndtime().getTime() - member.getStarttime().getTime())/(24*60*60*1000);
-            if (usedData >= 30 && usedData < 90){
-                member.setType("月卡");
-            }else if (usedData >= 90 && usedData < 180){
-                member.setType("季卡");
-            }else if (usedData >= 180 && usedData < 365){
-                member.setType("半年卡");
-            }else if (usedData >= 365){
-                member.setType("年卡");
-            }
+            UtilTools.fixUserType(member);
         });
         logger.info("根据指定会员查询到的分页用户为：" + allMenber);
 

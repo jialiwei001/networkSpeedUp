@@ -61,6 +61,7 @@
 						2、页面创建一个post表单
 						3、创建一个input项，name="_method";值就是我们指定的请求方式
 						-->
+						<input type="hidden" id="menberid" name="menberid"  th:value="${oneMenber.id}">
 
 						<div class="form-group">
 							<label>会员名称</label>
@@ -72,7 +73,7 @@
 						</div>
 						<div class="form-group">
 							<label>用户邮箱</label>
-							<input name="email"  type="text" class="form-control" placeholder="zhangsan" th:value="${oneMenber.menberEmail}">
+							<input name="email" id="email1" type="text" class="form-control" placeholder="zhangsan" th:value="${oneMenber.menberEmail}">
 						</div>
 						<div class="form-group">
 							<label>订阅地址</label>
@@ -98,6 +99,7 @@
 						</div>
 
 						<button type="submit" class="btn btn-primary" onclick="addTime()">续费</button>
+						<button type="submit" class="btn btn-success" onclick="editInfo()">修改信息</button>
 					</div>
 				</main>
 			</div>
@@ -123,6 +125,15 @@
                 $.post(url ,{"username":username,"phone":name,"type":number1,},function(data,status) {
                     alert(data)
                 })
+            }
+
+            function editInfo() {
+                var  url= "/menber/editInfo"
+                var id = $("#menberid").val();
+                var name = $("#phone1").val();
+                var email = $("#email1").val();
+
+                $.post(url ,{"id":id,"phone":name,"email":email,})
             }
 
 			feather.replace()
