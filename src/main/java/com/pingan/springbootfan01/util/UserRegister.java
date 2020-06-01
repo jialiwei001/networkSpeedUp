@@ -66,9 +66,10 @@ public class UserRegister {
 	       return enddate;
     }
 	//用户续费
-    public String AddDays(String email,int days)
+    public String AddDays(String email,int days,Boolean flag)
     {
     	String result=null;
+    	boolean flags = flag;
 		try {
 			String expire_in="";
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -81,13 +82,15 @@ public class UserRegister {
 				expire_in =rs.getString("expire_in");
 			}
 			rs.close();
-				Date d=new Date();
-				 try {
+			Date d=new Date();
+			if (flags){
+				try {
 					d = dateFormat.parse(expire_in);
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+			}
 			String endDate=GetDate_AfterAddDays(d,days);
 			String AddDays_Sql="update user SET expire_in =\""+endDate+"\",class_expire=\""+endDate+"\" where email=\""+email+"\"";
 			statement=conn.prepareStatement(AddDays_Sql);

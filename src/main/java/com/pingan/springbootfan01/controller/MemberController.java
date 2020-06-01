@@ -63,7 +63,7 @@ public class MemberController {
     @Transactional
     public String deleteMenberAndNote(@PathVariable("id") int id,Model model){
         Member findresult = mMemberService.findOnebyId(id);
-        String result = mUserRegister.AddDays(findresult.getMenberEmail(), -366);
+        String result = mUserRegister.AddDays(findresult.getMenberEmail(), -366,true);
         if (result == null){
 //            Notes  byContent  = mNotesDao.findByContent(findresult.getPhonenumber());
 //            if (byContent != null){
@@ -339,21 +339,24 @@ public class MemberController {
         }else {
             return "时间未配置上，请联系工作人员";
         }
-        //String result = UtilTools.addtime1(oneMenber.getPhonenumber(), days);
-        String result  = mUserRegister.AddDays(oneMenber.getMenberEmail(), days);
-        if (result != null){         //result != null
-            return "续费失败，请重新续费";
-        }
+        boolean flag = true;
+
         Date endtime = oneMenber.getEndtime();
         //延长时间
         Calendar instance = Calendar.getInstance();
         instance.setTime(endtime);
-
         //判断用户到期时间是否小于当前时间，如果小于，从当前时间开始计算添加时间
         Calendar crruentTime = Calendar.getInstance();
         crruentTime.setTime(new Date());
         if (instance.before(crruentTime)){
             instance.setTime(new Date());
+            flag = false;
+        }
+
+        //String result = UtilTools.addtime1(oneMenber.getPhonenumber(), days);
+        String result  = mUserRegister.AddDays(oneMenber.getMenberEmail(), days,flag);
+        if (result != null){         //result != null
+            return "续费失败，请重新续费";
         }
 
         instance.add(Calendar.DAY_OF_MONTH,days);
@@ -365,6 +368,7 @@ public class MemberController {
         Member addResult = mMemberService.addMember(oneMenber);
         notes.setCreateTime(new Date());
         mNotesDao.save(notes);
+
         return "续费成功~~~";
 
     }
@@ -407,7 +411,7 @@ public class MemberController {
         notes.setContent(phone);
 
         //String result = UtilTools.addtime1(oneMenber.getPhonenumber(), days);
-        String result  = mUserRegister.AddDays(oneMenber.getMenberEmail(), days);
+        String result  = mUserRegister.AddDays(oneMenber.getMenberEmail(), days,true);
         if (result != null){         //result != null
             return "续费失败，请重新续费";
         }
