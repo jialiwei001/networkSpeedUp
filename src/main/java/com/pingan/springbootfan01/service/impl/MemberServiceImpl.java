@@ -116,20 +116,21 @@ public class MemberServiceImpl implements MemberService {
                 if (localUser!=null) {
                     predicates.add(criteriaBuilder.equal(root.get("mLocalUser"), localUser));
                 }
-                if (phone != "" && phone != null){
+                if (!"".equals(phone) && phone != null){
                     predicates.add(criteriaBuilder.equal(root.get("phonenumber"),phone));
                 }
-                if (urlAdress != "" && urlAdress != null){
+                if (!"".equals(urlAdress) && urlAdress != null){
                     predicates.add(criteriaBuilder.equal(root.get("subUrl"),urlAdress));
                 }
-                if (type != "" && type != null){
+                if (!"".equals(type) && !"null".equals(type) && type != null){
                     predicates.add(criteriaBuilder.equal(root.get("type"),type));
                 }
-                if (start != "" && start != null){
+                if (!"".equals(start) && !"null".equals(start) && start != null){
                     predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("endtime").as(String.class),start));
                 }
-                if (end != "" && end != null){
-                    predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("endtime").as(String.class),end));
+                if (!"".equals(end) && !"null".equals(end) && end != null){
+                    predicates.add(criteriaBuilder.lessThan(root.get("endtime").as(String.class),end));
+                    query.orderBy(criteriaBuilder.asc(root.get("endtime")));
                 }
                 return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
             }

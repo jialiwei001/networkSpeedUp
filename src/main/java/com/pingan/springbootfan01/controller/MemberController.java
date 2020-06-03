@@ -118,15 +118,15 @@ public class MemberController {
 
     //查询所有会员用户,可以不输入参数
     @GetMapping("/findUserMenbers")
-    public String findUserMenbers(@RequestParam(value = "username",required = false)String username,  @RequestParam(value = "urlAdress",required = false)String urlAdress, @RequestParam(value = "phone",required = false)String phone,@RequestParam(value = "typename",required = false) String type,
+    public String findUserMenbers(@RequestParam(value = "username",required = false)String username,  @RequestParam(value = "urlAdress",required = false)String urlAdress, @RequestParam(value = "phone",required = false)String phone,@RequestParam(value = "typename",required = false) String typename,
                              @RequestParam(value = "startdate",required = false)String startdate, @RequestParam(value = "enddate", required = false)String enddate, Model model, @RequestParam(value = "pageNum", defaultValue = "0") int pageNum, @RequestParam(value = "pageSize", defaultValue = "50") int pageSize){
-        logger.debug("---MemberController findUserMenbers recive param username:{},urlAdress:{},phone:{},type:{},startdate:{},enddate:{},pageNum:{},pageSize:{}",username,urlAdress,phone,type,startdate,enddate,pageNum,pageSize);
+        logger.debug("---MemberController findUserMenbers recive param username:{},urlAdress:{},phone:{},type:{},startdate:{},enddate:{},pageNum:{},pageSize:{}",username,urlAdress,phone,typename,startdate,enddate,pageNum,pageSize);
         LocalUser localUser = mUserService.findUser(username);
         logger.debug("---MemberController menberlist mUserService.findUser result localUser:{}",
                      localUser);
         List<LocalUser> allUser = mUserService.findAllUser();
         model.addAttribute("allUser",allUser);
-        logger.debug("---查询前的参数为： username:{},urlAdress:{},phone:{},type:{},startdate:{},enddate:{},pageNum:{},pageSize:{}",username,urlAdress,phone,type,startdate,enddate,pageNum,pageSize);
+        logger.debug("---查询前的参数为： username:{},urlAdress:{},phone:{},type:{},startdate:{},enddate:{},pageNum:{},pageSize:{}",username,urlAdress,phone,typename,startdate,enddate,pageNum,pageSize);
         String phone1 = "";
         if (phone != "" && phone != null){
             phone1 = phone.trim();
@@ -135,25 +135,28 @@ public class MemberController {
         if (urlAdress != "" && urlAdress != null){
             urlAdress1 = urlAdress.trim();
         }
-        Page<Member> memberSet = mMemberService.findMenbers(localUser,urlAdress1,phone1,type,startdate,enddate, pageNum, pageSize);
+        Page<Member> memberSet = mMemberService.findMenbers(localUser,urlAdress1,phone1,typename,startdate,enddate, pageNum, pageSize);
         model.addAttribute("menbers",memberSet);
         model.addAttribute("user",username);
+        model.addAttribute("type",typename);
+        model.addAttribute("starttime",startdate);
+        model.addAttribute("endtime",enddate);
 
         return "menber/allmenberlist";
     }
 
     //查询所有会员用户
     @PostMapping("/findUserMenbers2")
-    public String findUserMenbers2(@RequestParam(value = "username",required = false)String username,  @RequestParam(value = "urlAdress",required = false)String urlAdress, @RequestParam(value = "phone",required = false)String phone,@RequestParam(value = "typename",required = false) String type,
+    public String findUserMenbers2(@RequestParam(value = "username",required = false)String username,  @RequestParam(value = "urlAdress",required = false)String urlAdress, @RequestParam(value = "phone",required = false)String phone,@RequestParam(value = "typename",required = false) String typename,
                                   @RequestParam(value = "startdate",required = false)String startdate, @RequestParam(value = "enddate", required = false)String enddate, Model model, @RequestParam(value = "pageNum", defaultValue = "0") int pageNum, @RequestParam(value = "pageSize", defaultValue = "50") int pageSize){
-        logger.debug("---MemberController findUserMenbers2 recive param username:{},urlAdress:{},phone:{},type:{},startdate:{},enddate:{},pageNum:{},pageSize:{}",username,urlAdress,phone,type,startdate,enddate,pageNum,pageSize);
+        logger.debug("---MemberController findUserMenbers2 recive param username:{},urlAdress:{},phone:{},type:{},startdate:{},enddate:{},pageNum:{},pageSize:{}",username,urlAdress,phone,typename,startdate,enddate,pageNum,pageSize);
         LocalUser localUser = mUserService.findUser(username);
         logger.debug("---MemberController findUserMenbers2 menberlist mUserService.findUser result localUser:{}",
                      localUser);
         //查询所有的会员
         List<LocalUser> allUser = mUserService.findAllUser();
         model.addAttribute("allUser",allUser);
-        logger.debug("---查询前的参数为： username:{},urlAdress:{},phone:{},type:{},startdate:{},enddate:{},pageNum:{},pageSize:{}",username,urlAdress,phone,type,startdate,enddate,pageNum,pageSize);
+        logger.debug("---查询前的参数为： username:{},urlAdress:{},phone:{},type:{},startdate:{},enddate:{},pageNum:{},pageSize:{}",username,urlAdress,phone,typename,startdate,enddate,pageNum,pageSize);
 
         String phone1 = "";
         if (phone != "" && phone != null){
@@ -163,9 +166,12 @@ public class MemberController {
         if (urlAdress != "" && urlAdress != null){
             urlAdress1 = urlAdress.trim();
         }
-        Page<Member> memberSet = mMemberService.findMenbers(localUser,urlAdress1,phone1,type,startdate,enddate, pageNum, pageSize);
+        Page<Member> memberSet = mMemberService.findMenbers(localUser,urlAdress1,phone1,typename,startdate,enddate, pageNum, pageSize);
         model.addAttribute("menbers",memberSet);
         model.addAttribute("user",username);
+        model.addAttribute("type",typename);
+        model.addAttribute("starttime",startdate);
+        model.addAttribute("endtime",enddate);
 
         return "menber/allmenberlist";
     }
