@@ -4,6 +4,7 @@ import com.pingan.springbootfan01.dao.MemberDao;
 import com.pingan.springbootfan01.entity.LocalUser;
 import com.pingan.springbootfan01.entity.Member;
 import com.pingan.springbootfan01.service.MemberService;
+import com.pingan.springbootfan01.util.UserRegister;
 import com.pingan.springbootfan01.util.UtilTools;
 
 import org.slf4j.Logger;
@@ -38,6 +39,9 @@ public class MemberServiceImpl implements MemberService {
 
     @Autowired
     private MemberDao mMemberDao;
+
+    @Autowired
+    private UserRegister mUserRegister;
 
     //保存用户
     public Member addMember(Member member){

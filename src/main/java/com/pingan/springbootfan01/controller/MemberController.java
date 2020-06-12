@@ -94,9 +94,9 @@ public class MemberController {
 
     //按条件查询用户
     @PostMapping("/findmenbers")
-    public String findMenber(@RequestParam("username")String username,  @RequestParam(value = "urlAdress",required = false)String urlAdress, @RequestParam(value = "phone",required = false)String phone,@RequestParam(value = "typename",required = false) String type,
+    public String findMenber(@RequestParam("username")String username,  @RequestParam(value = "urlAdress",required = false)String urlAdress, @RequestParam(value = "phone",required = false)String phone,@RequestParam(value = "typename",required = false) String typename,
                              @RequestParam(value = "startdate",required = false)String startdate, @RequestParam(value = "enddate", required = false)String enddate, Model model, @RequestParam(value = "pageNum", defaultValue = "0") int pageNum, @RequestParam(value = "pageSize", defaultValue = "50") int pageSize){
-        logger.debug("---MemberController findMenber recive param username:{},type:{},urlAdress:{},phone:{},startdate:{},enddate:{}",username,type,urlAdress,phone,startdate,enddate);
+        logger.debug("---MemberController findMenber recive param username:{},type:{},urlAdress:{},phone:{},startdate:{},enddate:{}",username,typename,urlAdress,phone,startdate,enddate);
         LocalUser localUser = mUserService.findUser(username);
         logger.debug("---MemberController menberlist mUserService.findUser result localUser:{}",
                      localUser);
@@ -109,9 +109,12 @@ public class MemberController {
         if (urlAdress != "" && urlAdress != null){
             urlAdress1 = urlAdress.trim();
         }
-        Page<Member> memberSet = mMemberService.findMenbers(localUser,urlAdress1,phone1,type,startdate,enddate, pageNum, pageSize);
+        Page<Member> memberSet = mMemberService.findMenbers(localUser,urlAdress1,phone1,typename,startdate,enddate, pageNum, pageSize);
         model.addAttribute("menbers",memberSet);
         model.addAttribute("user",username);
+        model.addAttribute("type",typename);
+        model.addAttribute("starttime",startdate);
+        model.addAttribute("endtime",enddate);
 
         return "menber/list";
     }

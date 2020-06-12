@@ -1,6 +1,9 @@
 package com.pingan.springbootfan01;
 
+import com.pingan.springbootfan01.dao.MemberDao;
 import com.pingan.springbootfan01.dao.UserDao;
+import com.pingan.springbootfan01.entity.Member;
+import com.pingan.springbootfan01.util.UserRegister;
 
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -15,8 +18,11 @@ class SpringbootFan01ApplicationTests {
     @Autowired
     UserDao mUserDao;
 
-//    @Autowired
-//    MemberDao mMemberDao;
+   @Autowired
+    MemberDao mMemberDao;
+
+   @Autowired
+   UserRegister mUserRegister;
 //
 //    @Autowired
 //    MemberService mMemberService;
@@ -27,7 +33,32 @@ class SpringbootFan01ApplicationTests {
 //
 //    RestTemplate template = new RestTemplate();
 
+    @Test
+    public void testMemberDao(){
+        //System.out.println("开始测试。。。");
+        //Optional<Member> byId = mMemberDao.findById(27);
+        //System.out.println("测试结果："+ byId.get().toString());
 
+        Member member = mMemberDao.findById(103).get();
+
+        String today = mUserRegister.DataUsageForToday(member.getMenberEmail());
+        String month = mUserRegister.DataUsageForTotal(member.getMenberEmail());
+        if (today.equals("0.0")){
+            member.setD(today);
+        }else {
+            member.setD(today.substring(0,today.indexOf(".")+4));
+        }
+        if (month.equals("0.0")){
+            member.setT(today);
+        }else {
+            member.setT(month.substring(0,month.indexOf(".")+4));
+        }
+        mMemberDao.save(member);
+
+        //String aa1 = "123.1232233443";
+        //System.out.println(Float.parseFloat(aa1));
+        //System.out.println("-------"+aa1.substring(0,aa1.indexOf(".")+4));
+    }
 
     @Test
     //@Transactional

@@ -61,7 +61,7 @@
         <!--引入侧边栏-->
         <div th:replace="commons/bar::#sidebar(activeUri='findUserMenbers')"></div>
 
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+        <main role="main" class="col-md-11 ml-sm-auto col-lg-11 pt-3 px-4">
             <div>
 
                 <form class="form-inline" th:action="@{/findUserMenbers2}" method="post">
@@ -131,6 +131,8 @@
                         <th>开通时间</th>
                         <th>结束时间</th>
                         <th>会员类型</th>
+                        <th>当日流量</th>
+                        <th>当月流量</th>
                         <th>续费次数</th>
 
                         <th>操作</th>
@@ -147,6 +149,8 @@
                         <td th:text="${#dates.format(menber.starttime, 'yyyy-MM-dd HH:mm')}"></td>
                         <td th:text="${#dates.format(menber.endtime, 'yyyy-MM-dd HH:mm')}"></td>
                         <td th:text="${menber.type}"></td>
+                        <td th:text="${menber.d}"></td>
+                        <td th:text="${menber.t}"></td>
                         <td th:text="${menber.amount}"></td>
                         <td>
                             <a class="btn btn-sm btn-primary" th:href="@{/menberaddtime/}+${menber.id}">续费</a>

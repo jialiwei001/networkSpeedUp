@@ -50,6 +50,14 @@ public class Member {
     //数量
     @NotNull
     private              int       amount;
+
+    private Integer n;
+
+    private String u;
+
+    private String d;
+
+    private String t;
     //外键 mLocalUser
     @ManyToOne
     @JoinColumn(name = "cid")
@@ -144,6 +152,38 @@ public class Member {
         this.menberEmail = menberEmail;
     }
 
+    public Integer getN() {
+        return n;
+    }
+
+    public void setN(Integer n) {
+        this.n = n;
+    }
+
+    public String getU() {
+        return u;
+    }
+
+    public void setU(String u) {
+        this.u = u;
+    }
+
+    public String getD() {
+        return d;
+    }
+
+    public void setD(String d) {
+        this.d = d;
+    }
+
+    public String getT() {
+        return t;
+    }
+
+    public void setT(String t) {
+        this.t = t;
+    }
+
     //    @ManyToOne(targetEntity = LocalUser.class)
 //    @JoinColumn(name = "cid",referencedColumnName = "id")
 //    public Integer getCid() {
@@ -157,7 +197,7 @@ public class Member {
 
     @Override
     public String toString() {
-        return "Member{" + "id=" + id + ", username='" + username + '\'' + ", password='" + password + '\'' + ", menberEmail='" + menberEmail + '\'' + ", subUrl='" + subUrl + '\'' + ", phonenumber='" + phonenumber + '\'' + ", starttime=" + starttime + ", endtime=" + endtime + ", type='" + type + '\'' + ", amount=" + amount + '}';
+        return "Member{" + "id=" + id + ", username='" + username + '\'' + ", password='" + password + '\'' + ", menberEmail='" + menberEmail + '\'' + ", subUrl='" + subUrl + '\'' + ", phonenumber='" + phonenumber + '\'' + ", starttime=" + starttime + ", endtime=" + endtime + ", type='" + type + '\'' + ", amount=" + amount + ", n=" + n + ", u='" + u + '\'' + ", d='" + d + '\'' + ", t='" + t + '\'' + ", mLocalUser=" + mLocalUser + '}';
     }
 
     public String toString2() {

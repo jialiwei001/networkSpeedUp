@@ -133,5 +133,59 @@ public class UserRegister {
 		}
 		return token;
     }
+
+	public String DataUsageForToday(String email) {
+		String dataUsage=null;
+		double usage=0;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+			String sql="select u from user where email='"+email+"'";
+			System.out.println(sql);
+			PreparedStatement statement = conn.prepareStatement(sql);
+			ResultSet rs =statement.executeQuery();
+			while(rs.next()) {
+				usage =Double.parseDouble(rs.getString("u"));
+				System.out.println(rs.getString("u"));
+			}
+			usage=usage/1024/1024/1024;
+			dataUsage=usage+"";
+			statement.close();
+			conn.close();
+			return dataUsage;
+		} catch (ClassNotFoundException e) {
+			dataUsage= e.getMessage();
+		}catch (SQLException e) {
+			dataUsage = e.getMessage();
+		}
+
+		return dataUsage;
+	}
+	public String DataUsageForTotal(String email) {
+		String dataUsage=null;
+		double usage=0;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+			String sql="select d from user where email='"+email+"'";
+			PreparedStatement statement = conn.prepareStatement(sql);
+			System.out.println(sql);
+			ResultSet rs =statement.executeQuery();
+			while(rs.next()) {
+				usage =Double.parseDouble(rs.getString("d"));
+			}
+			usage=usage/1024/1024/1024;
+			dataUsage=usage+"";
+			statement.close();
+			conn.close();
+			return dataUsage;
+		} catch (ClassNotFoundException e) {
+			dataUsage= e.getMessage();
+		}catch (SQLException e) {
+			dataUsage = e.getMessage();
+		}
+
+		return dataUsage;
+	}
 }
 

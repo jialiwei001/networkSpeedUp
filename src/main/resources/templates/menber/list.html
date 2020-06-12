@@ -61,7 +61,7 @@
         <!--引入侧边栏-->
         <div th:replace="commons/bar::#sidebar(activeUri='emps')"></div>
 
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+        <main role="main" class="col-md-11 ml-sm-auto col-lg-11 pt-3 px-4">
             <div>
 
                 <form class="form-inline" th:action="@{/findmenbers}" method="post">
@@ -123,6 +123,8 @@
                         <th>开通时间</th>
                         <th>结束时间</th>
                         <th>会员类型</th>
+                        <th>当日流量</th>
+                        <th>当月流量</th>
                         <th>续费次数</th>
 
                         <th>操作</th>
@@ -139,6 +141,8 @@
                         <td th:text="${#dates.format(menber.starttime, 'yyyy-MM-dd HH:mm')}"></td>
                         <td th:text="${#dates.format(menber.endtime, 'yyyy-MM-dd HH:mm')}"></td>
                         <td th:text="${menber.type}"></td>
+                        <td th:text="${menber.d}"></td>
+                        <td th:text="${menber.t}"></td>
                         <td th:text="${menber.amount}"></td>
                         <td>
                             <a class="btn btn-sm btn-primary"
@@ -155,24 +159,24 @@
                     <!-- 首页"@{/menber?id=1(username=${session.loginUser})}" -->
                     <li>
                         <a class="btn btn-sm btn-primary"
-                           th:href="'/menber?username='+${session.loginUser}+'&pageNum=0'">首页</a>
+                           th:href="'/findUserMenbers?username='+${user}+'&typename='+${type}+'&startdate='+${starttime}+'&enddate='+${endtime}+'&pageNum=0'">首页</a>
                     </li>
 
                     <!-- 上一页 -->
                     <li th:if="${menbers.hasPrevious()}">
                         <a class="btn btn-sm btn-primary"
-                           th:href="'/menber?username='+${session.loginUser} +'&pageNum='+ ${menbers.previousPageable().getPageNumber()}"
+                           th:href="'/findUserMenbers?username='+${user} +'&typename='+${type}+'&startdate='+${starttime}+'&enddate='+${endtime}+'&pageNum='+ ${menbers.previousPageable().getPageNumber()}"
                            th:text="上一页"></a>
                     </li>
 
                     <!-- 中间页 -->
                     <li th:each="pageNum:${#numbers.sequence(0, menbers.getTotalPages() - 1)}">
                         <a class="btn btn-sm btn-primary"
-                           th:href="'/menber?username='+${session.loginUser}+'&pageNum=' + ${pageNum}"
+                           th:href="'/findUserMenbers?username='+${user}+'&typename='+${type}+'&startdate='+${starttime}+'&enddate='+${endtime}+'&pageNum=' + ${pageNum}"
                            th:text="${pageNum + 1}"
                            th:if="${pageNum ne menbers.pageable.getPageNumber()}"></a>
                         <a class="btn btn-sm btn-primary"
-                           th:href="'/menber?username='+${session.loginUser}+'&pageNum=' + ${pageNum}"
+                           th:href="'/findUserMenbers?username='+${user}+'&typename='+${type}+'&startdate='+${starttime}+'&enddate='+${endtime}+'&pageNum=' + ${pageNum}"
                            th:text="${pageNum + 1}"
                            th:if="${pageNum eq menbers.pageable.getPageNumber()}"
                            th:style="'font-weight:bold;background: #6faed9;'"></a>
@@ -181,14 +185,14 @@
                     <!-- 下一页 -->
                     <li th:if="${menbers.hasNext()}">
                         <a class="btn btn-sm btn-primary"
-                           th:href="'/menber?username='+${session.loginUser} +'&pageNum='+ ${menbers.nextPageable().getPageNumber()}"
+                           th:href="'/findUserMenbers?username='+${user} +'&typename='+${type}+'&startdate='+${starttime}+'&enddate='+${endtime}+'&pageNum='+ ${menbers.nextPageable().getPageNumber()}"
                            th:text="下一页"></a>
                     </li>
 
                     <!-- 尾页 -->
                     <li>
                         <a class="btn btn-sm btn-primary"
-                           th:href="'/menber?username='+${session.loginUser}+'&pageNum=' + ${menbers.getTotalPages() - 1}">尾页</a>
+                           th:href="'/findUserMenbers?username='+${user}+'&typename='+${type}+'&startdate='+${starttime}+'&enddate='+${endtime}+'&pageNum=' + ${menbers.getTotalPages() - 1}">尾页</a>
                     </li>
 
                 </ul>
