@@ -175,6 +175,9 @@ public class UserRegister {
 				usage =Double.parseDouble(rs.getString("d"));
 			}
 			usage=usage/1024/1024/1024;
+			String today = DataUsageForToday(email);
+			double todayDouble = Double.valueOf(today);
+			usage += todayDouble;
 			dataUsage=usage+"";
 			statement.close();
 			conn.close();
@@ -187,5 +190,6 @@ public class UserRegister {
 
 		return dataUsage;
 	}
+	
 }
 
