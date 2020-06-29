@@ -23,6 +23,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -185,7 +189,7 @@ public class MemberController {
     @PostMapping("/localUser/createMonth")
     @ResponseBody
     @Transactional
-    public String createMonthMember(String username,String phone,String type,@RequestParam(value = "number",required = false,defaultValue = "0") int number){
+    public String createMonthMember(String username,String phone,String type,@RequestParam(value = "number",required = false,defaultValue = "0") int number) throws InterruptedException{
         logger.debug("---MemberController  createMonthMember rceive param username:{},phone:{},type:{}",username,phone,type);
         //先设置他的user
         LocalUser localUser = mUserService.findUser(username);
@@ -286,12 +290,26 @@ public class MemberController {
             Member addResult = mMemberService.addMember(member);
             notes.setCreateTime(new Date());
             mNotesDao.save(notes);
+            // 把文本设置到剪贴板（复制）
+            //setClipboardString(addResult.toString2());
+            //Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(addResult.toString2()), null);
             return addResult.toString2();
 
         }else {
             return "创建失败，请重新创建";
         }
     }
+
+    //操作剪切板的方法
+    public static void setClipboardString(String text) {
+        // 获取系统剪贴板
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        // 封装文本内容
+        Transferable trans = new StringSelection(text);
+        // 把文本内容设置到系统剪贴板
+        clipboard.setContents(trans, null);
+    }
+
 
     //去续费页面
     @GetMapping("/menberaddtime/{id}")

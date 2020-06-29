@@ -29,7 +29,7 @@ public class MyScheduledTask {
     private MemberDao mMemberDao;
 
 
-    @Scheduled(initialDelay = 1000, fixedRate = 10800000)
+    @Scheduled(initialDelay = 1200000, fixedRate = 7200000)
     public void sheduledTask1(){
         System.out.println("查询流量定时任务执行。。。。");
         List<Member> all = mMemberDao.findAll();
