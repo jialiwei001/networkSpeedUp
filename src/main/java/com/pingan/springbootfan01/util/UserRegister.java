@@ -93,7 +93,10 @@ public class UserRegister {
 			}
 			String endDate=GetDate_AfterAddDays(d,days);
 			String AddDays_Sql="update user SET expire_in =\""+endDate+"\",class_expire=\""+endDate+"\" where email=\""+email+"\"";
+			String AddDaysNodeTotal="update user SET transfer_enable =\"214748364800\",class=\"2\" where email=\""+email+"\"";
 			statement=conn.prepareStatement(AddDays_Sql);
+			statement.executeUpdate();
+			statement=conn.prepareStatement(AddDaysNodeTotal);
 			statement.executeUpdate();
 			conn.close();
 			statement.close();
@@ -175,10 +178,9 @@ public class UserRegister {
 				usage =Double.parseDouble(rs.getString("d"));
 			}
 			usage=usage/1024/1024/1024;
-			String today = DataUsageForToday(email);
-			double todayDouble = Double.valueOf(today);
-			usage += todayDouble;
-			dataUsage=usage+"";
+            String day = DataUsageForToday(email);
+            usage = Double.valueOf(day) + usage;
+            dataUsage=usage+"";
 			statement.close();
 			conn.close();
 			return dataUsage;
