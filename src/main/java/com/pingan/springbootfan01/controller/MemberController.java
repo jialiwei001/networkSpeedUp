@@ -336,10 +336,12 @@ public class MemberController {
             return "会员不存在,请重新登录";
         }
         //查找用户
-        Member oneMenber = mMemberService.findOnebyPhone(phone);
+        String phone1 = phone.trim();
+        Member oneMenber = mMemberService.findOnebyPhone(phone1);
         if (oneMenber == null){
             return "查找用户失败,请输入正确用户";
         }
+        String typeName = "";
         Notes notes = new Notes();
         notes.setLocalUser(localUser);
         int days = 0;
@@ -348,21 +350,25 @@ public class MemberController {
             notes.setType("续费月卡");
             notes.setNumber(1);
             notes.setContent(phone);
+            typeName = "月卡";
         }else if (type.equals("续费季卡")){
             days = 91;
             notes.setType("续费季卡");
             notes.setNumber(1);
             notes.setContent(phone);
+            typeName = "季卡";
         }else if (type.equals("续费半年卡")){
             days = 182;
             notes.setType("续费半年卡");
             notes.setNumber(1);
             notes.setContent(phone);
+            typeName = "半年卡";
         }else if (type.equals("续费年卡")){
             days = 365;
             notes.setType("续费年卡");
             notes.setNumber(1);
             notes.setContent(phone);
+            typeName = "年卡";
         }else {
             return "时间未配置上，请联系工作人员";
         }
@@ -396,7 +402,7 @@ public class MemberController {
         notes.setCreateTime(new Date());
         mNotesDao.save(notes);
 
-        return "续费成功~~~";
+        return "【"+typeName+"】" +"续费成功~~~";
 
     }
 
@@ -419,7 +425,8 @@ public class MemberController {
             return "会员不是admin账号，无权加时间";
         }
         //查找用户
-        Member oneMenber = mMemberService.findOnebyPhone(phone);
+        String phone1 = phone.trim();
+        Member oneMenber = mMemberService.findOnebyPhone(phone1);
         if (oneMenber == null){
             return "查找用户失败,请输入正确用户";
         }
@@ -456,7 +463,7 @@ public class MemberController {
         Member addResult = mMemberService.addMember(oneMenber);
         notes.setCreateTime(new Date());
         mNotesDao.save(notes);
-        return "续时成功~~~";
+        return "续时"+"【"+time+"】"+"成功~~~";
 
     }
 
