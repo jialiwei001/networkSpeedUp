@@ -337,9 +337,17 @@ public class MemberController {
         }
         //查找用户
         String phone1 = phone.trim();
-        Member oneMenber = mMemberService.findOnebyPhone(phone1);
-        if (oneMenber == null){
-            return "查找用户失败,请输入正确用户";
+        Member oneMenber = null;
+        if (phone1.length() > 20){
+            oneMenber = mMemberDao.findBySubUrl(phone1);
+            if (oneMenber == null){
+                return "查找订阅地址失败,请输入正确的订阅地址";
+            }
+        }else {
+            oneMenber = mMemberService.findOnebyPhone(phone1);
+            if (oneMenber == null){
+                return "查找用户失败,请输入正确用户";
+            }
         }
         String typeName = "";
         Notes notes = new Notes();
@@ -349,25 +357,25 @@ public class MemberController {
             days = 30;
             notes.setType("续费月卡");
             notes.setNumber(1);
-            notes.setContent(phone);
+            notes.setContent(oneMenber.getPhonenumber());
             typeName = "月卡";
         }else if (type.equals("续费季卡")){
             days = 91;
             notes.setType("续费季卡");
             notes.setNumber(1);
-            notes.setContent(phone);
+            notes.setContent(oneMenber.getPhonenumber());
             typeName = "季卡";
         }else if (type.equals("续费半年卡")){
             days = 182;
             notes.setType("续费半年卡");
             notes.setNumber(1);
-            notes.setContent(phone);
+            notes.setContent(oneMenber.getPhonenumber());
             typeName = "半年卡";
         }else if (type.equals("续费年卡")){
             days = 365;
             notes.setType("续费年卡");
             notes.setNumber(1);
-            notes.setContent(phone);
+            notes.setContent(oneMenber.getPhonenumber());
             typeName = "年卡";
         }else {
             return "时间未配置上，请联系工作人员";
@@ -402,7 +410,7 @@ public class MemberController {
         notes.setCreateTime(new Date());
         mNotesDao.save(notes);
 
-        return "【"+typeName+"】" +"续费成功~~~";
+        return "账户:【"+oneMenber.getPhonenumber() +"】成功续费【"+typeName+"】" +"~~~";
 
     }
 
@@ -426,9 +434,17 @@ public class MemberController {
         }
         //查找用户
         String phone1 = phone.trim();
-        Member oneMenber = mMemberService.findOnebyPhone(phone1);
-        if (oneMenber == null){
-            return "查找用户失败,请输入正确用户";
+        Member oneMenber = null;
+        if (phone1.length() > 20){
+            oneMenber = mMemberDao.findBySubUrl(phone1);
+            if (oneMenber == null){
+                return "查找订阅地址失败,请输入正确的订阅地址";
+            }
+        }else {
+            oneMenber = mMemberService.findOnebyPhone(phone1);
+            if (oneMenber == null){
+                return "查找用户失败,请输入正确用户";
+            }
         }
         if (time == 0 || time > 1000){
             return "请输入正确天数";
@@ -463,7 +479,7 @@ public class MemberController {
         Member addResult = mMemberService.addMember(oneMenber);
         notes.setCreateTime(new Date());
         mNotesDao.save(notes);
-        return "续时"+"【"+time+"】"+"成功~~~";
+        return "账户:【"+oneMenber.getPhonenumber() +"】成功续时"+"【"+time+"天】"+"~~~";
 
     }
 
