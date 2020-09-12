@@ -121,7 +121,7 @@ public class MemberServiceImpl implements MemberService {
                     predicates.add(criteriaBuilder.equal(root.get("mLocalUser"), localUser));
                 }
                 if (!"".equals(phone) && phone != null){
-                    predicates.add(criteriaBuilder.equal(root.get("phonenumber"),phone));
+                    predicates.add(criteriaBuilder.like(root.get("phonenumber"),"%"+phone+"%"));
                 }
                 if (!"".equals(urlAdress) && urlAdress != null){
                     predicates.add(criteriaBuilder.equal(root.get("subUrl"),urlAdress));

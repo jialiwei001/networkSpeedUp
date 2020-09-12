@@ -52,7 +52,7 @@ public class NotesServiceImpl implements NotesService {
                     predicates.add(criteriaBuilder.equal(root.get("mLocalUser"), localUser));
                 }
                 if (phone != "" && phone != null){
-                    predicates.add(criteriaBuilder.equal(root.get("content"),phone));
+                    predicates.add(criteriaBuilder.like(root.get("content"),"%"+phone+"%"));
                 }
                 if (start != "" && start != null){
                     predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("createTime").as(String.class),start));
