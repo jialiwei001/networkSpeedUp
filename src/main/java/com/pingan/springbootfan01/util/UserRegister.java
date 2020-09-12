@@ -123,7 +123,7 @@ public class UserRegister {
 			token= rs.getString("token");
 			}
 			rs.close();
-			AddDays_Sql="update user SET expire_in =\""+endDate+"\",class_expire=\""+endDate+"\",class=2,transfer_enable=5368709120000000,node_connector=2 where email=\""+email+"\"";
+			AddDays_Sql="update user SET expire_in =\""+endDate+"\",class_expire=\""+endDate+"\",class=2,transfer_enable=322122547200,node_connector=2 where email=\""+email+"\"";
 			System.out.println(AddDays_Sql);
 			statement = conn.prepareStatement(AddDays_Sql);
 			statement.executeUpdate();
