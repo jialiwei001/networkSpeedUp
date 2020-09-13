@@ -29,25 +29,21 @@ public class MyScheduledTask {
     private MemberDao mMemberDao;
 
 
-    @Scheduled(initialDelay = 1000000, fixedRate = 7200000)
+    @Scheduled(initialDelay = 10000, fixedRate = 7200000)
     public void sheduledTask1(){
         System.out.println("查询流量定时任务执行。。。。");
         List<Member> all = mMemberDao.findAll();
 
         all.forEach(member -> {
 
-            String today = mUserRegister.DataUsageForToday(member.getMenberEmail());
             String month = mUserRegister.DataUsageForTotal(member.getMenberEmail());
-            if (today.equals("0.0")){
-                member.setD(today);
-            }else {
-                member.setD(today.substring(0,today.indexOf(".")+4));
-            }
-            if (month.equals("0.0")){
-                member.setT(today);
+            String allTotal = mUserRegister.DataUsageForAllTotal(member.getMenberEmail());
+            if (month.equals("0.0") || month.length() > 30){
+                member.setT("0.0");
             }else {
                 member.setT(month.substring(0,month.indexOf(".")+4));
             }
+            member.setU(allTotal);
             mMemberDao.save(member);
         });
 

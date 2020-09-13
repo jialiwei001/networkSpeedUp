@@ -137,8 +137,7 @@ public class UserRegister {
 		return token;
     }
 
-	public String DataUsageForToday(String email) {
-		String dataUsage=null;
+	public Double DataUsageForToday(String email) {
 		double usage=0;
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -151,18 +150,13 @@ public class UserRegister {
 				usage =Double.parseDouble(rs.getString("u"));
 				System.out.println(rs.getString("u"));
 			}
-			usage=usage/1024/1024/1024;
-			dataUsage=usage+"";
 			statement.close();
 			conn.close();
-			return dataUsage;
-		} catch (ClassNotFoundException e) {
-			dataUsage= e.getMessage();
-		}catch (SQLException e) {
-			dataUsage = e.getMessage();
-		}
 
-		return dataUsage;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return usage;
 	}
 	public String DataUsageForTotal(String email) {
 		String dataUsage=null;
@@ -176,11 +170,42 @@ public class UserRegister {
 			ResultSet rs =statement.executeQuery();
 			while(rs.next()) {
 				usage =Double.parseDouble(rs.getString("d"));
+				System.out.println(rs.getString("d"));
 			}
-			usage=usage/1024/1024/1024;
-            String day = DataUsageForToday(email);
-            usage = Double.valueOf(day) + usage;
+			double day = DataUsageForToday(email);
+			System.out.println("查询当天值："+day);
+			System.out.println("查询当月值："+usage);
+			usage=(day +usage)/1024/1024/1024;
             dataUsage=usage+"";
+			System.out.println("相加后的当月已用值："+dataUsage);
+			statement.close();
+			conn.close();
+			return dataUsage;
+		} catch (ClassNotFoundException e) {
+			dataUsage= e.getMessage();
+		}catch (SQLException e) {
+			dataUsage = e.getMessage();
+		}
+
+		return dataUsage;
+	}
+
+	public String DataUsageForAllTotal(String email) {
+		String dataUsage=null;
+		double allTotal=0;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+			String sql="select transfer_enable from user where email='"+email+"'";
+			PreparedStatement statement = conn.prepareStatement(sql);
+			System.out.println(sql);
+			ResultSet rs =statement.executeQuery();
+			while(rs.next()) {
+				allTotal =Double.parseDouble(rs.getString("transfer_enable"));
+				System.out.println(rs.getString("transfer_enable"));
+			}
+			allTotal=allTotal/1024/1024/1024;
+			dataUsage=allTotal+"";
 			statement.close();
 			conn.close();
 			return dataUsage;

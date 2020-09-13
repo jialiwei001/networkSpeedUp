@@ -123,9 +123,9 @@
                         <th>开通时间</th>
                         <th>结束时间</th>
                         <th>会员类型</th>
-                        <th>当日流量</th>
-                        <th>当月流量</th>
-                        <th>续费次数</th>
+                        <th>已用流量</th>
+                        <th>总流量</th>
+                        <th>次数</th>
 
                         <th>操作</th>
                     </tr>
@@ -138,11 +138,11 @@
 
                         <td th:text="${menber.phonenumber}"></td>
                         <td th:text="${menber.localUser.username}"></td>
-                        <td th:text="${#dates.format(menber.starttime, 'yyyy-MM-dd HH:mm')}"></td>
-                        <td th:text="${#dates.format(menber.endtime, 'yyyy-MM-dd HH:mm')}"></td>
+                        <td th:text="${#dates.format(menber.starttime, 'yyyy-MM-dd')}"></td>
+                        <td th:text="${#dates.format(menber.endtime, 'yyyy-MM-dd')}"></td>
                         <td th:text="${menber.type}"></td>
-                        <td th:text="${menber.d}"></td>
                         <td th:text="${menber.t}"></td>
+                        <td th:text="${menber.u}"></td>
                         <td th:text="${menber.amount}"></td>
                         <td>
                             <a class="btn btn-sm btn-primary"
