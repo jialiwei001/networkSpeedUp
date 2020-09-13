@@ -80,6 +80,10 @@
 							<input name="subUrl" id="url1" type="text" class="form-control" placeholder="zhangsan" th:value="${oneMenber.subUrl}">
 						</div>
 						<div class="form-group">
+							<label>总流量</label>
+							<input name="totalData" id="total1" type="text" class="form-control" placeholder="zhangsan" th:value="${oneMenber.u}">
+						</div>
+						<div class="form-group">
 							<label>创建时间</label>
 							<input name="startTime" type="text" class="form-control" placeholder="zhangsan" th:value="${oneMenber.starttime}">
 						</div>
@@ -132,8 +136,11 @@
                 var id = $("#menberid").val();
                 var name = $("#phone1").val();
                 var email = $("#email1").val();
+                var totalData = $("#total1").val();
 
-                $.post(url ,{"id":id,"phone":name,"email":email,})
+                $.post(url ,{"id":id,"phone":name,"email":email,"totalData":totalData},function(data,status) {
+                    alert(data)
+                })
             }
 
 			feather.replace()

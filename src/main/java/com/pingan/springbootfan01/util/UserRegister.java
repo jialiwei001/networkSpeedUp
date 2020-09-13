@@ -214,9 +214,30 @@ public class UserRegister {
 		}catch (SQLException e) {
 			dataUsage = e.getMessage();
 		}
-
 		return dataUsage;
 	}
 
+	//用户xiugaizongliuliang
+	public String fixTotalData(String email,String totalData)
+	{
+		String result=null;
+		try {
+			Double total=Double.valueOf(totalData)*1024*1024*1024;
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+			String fixTotalData="update user set transfer_enable = \""+total+"\"  where email=\""+email+"\"";
+			PreparedStatement statement = conn.prepareStatement(fixTotalData);
+			statement.executeUpdate();
+
+			conn.close();
+			statement.close();
+		} catch (ClassNotFoundException e) {
+			result= e.getMessage();
+		}catch (SQLException e) {
+			result = e.getMessage();
+		}
+
+		return result;
+	}
 }
 

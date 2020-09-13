@@ -485,37 +485,46 @@ public class MemberController {
 
 
     @PostMapping("/menber/editInfo")
-    public String editInfo(Integer id,String phone,String email,Model model)
+    @ResponseBody
+    public String editInfo(Integer id,String phone,String email,Model model,String totalData)
     {
-        logger.debug("---MemberController editInfo rceive param id:{}, phone:{},email:{}",
+        logger.debug("---MemberController editInfo rceive param id:{}, phone:{},email:{},totalData:{}",
                      id,
                      phone,
-                     email);
+                     email,totalData);
+        String fixPhone = "";
+        String fixData = "";
         //查找用户
         Member oneMenber = mMemberService.findOnebyId(id);
         if (oneMenber == null) {
             return "没有查找到用户";
         }
-        Member oneMenber2 = mMemberService.findOnebyPhone(phone);
-        if (oneMenber2 == null){
-            String phone1 = "";
-            if (phone != "" && phone != null){
-                phone1 = phone.trim();
-                oneMenber.setPhonenumber(phone1);
+        if (!oneMenber.getPhonenumber().equals(phone)){
+            Member oneMenber2 = mMemberService.findOnebyPhone(phone);
+            if (oneMenber2  == null){
+                String phone1 = "";
+                if (phone != "" && phone != null){
+                    phone1 = phone.trim();
+                    oneMenber.setPhonenumber(phone1);
+                    fixPhone = "【手机号】";
+                }
+            }else {
+                logger.debug("---MemberController editInfo 手机号被占用...");
             }
-            String email1 = "";
-            if (email != "" && email != null){
-                email1 = email.trim();
-                oneMenber.setMenberEmail(email1);
+        }
+        if (!totalData.equals(oneMenber.getU())){
+            String result = mUserRegister.fixTotalData(oneMenber.getMenberEmail(), totalData);
+            if (result == null){
+                oneMenber.setU(totalData);
+                fixData = "【总流量】";
+            }else {
+                logger.info("修改总流量失败...");
             }
-        }else {
-            logger.debug("---MemberController editInfo 手机号被占用");
         }
         Member addResult = mMemberService.addMember(oneMenber);
         model.addAttribute("oneMenber",addResult);
         logger.debug("---MemberController editInfo execution complete");
-        return "menber/addtime";
-
+        return "成功修改了"+fixPhone+"-"+fixData;
     }
 
     @LocalLock(key = "book:arg[0]")
