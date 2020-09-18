@@ -116,6 +116,35 @@ public class MemberController {
         Page<Member> memberSet = mMemberService.findMenbers(localUser,urlAdress1,phone1,typename,startdate,enddate, pageNum, pageSize);
         model.addAttribute("menbers",memberSet);
         model.addAttribute("user",username);
+        model.addAttribute("phone",phone1);
+        model.addAttribute("type",typename);
+        model.addAttribute("starttime",startdate);
+        model.addAttribute("endtime",enddate);
+
+        return "menber/list";
+    }
+
+    //按条件查询，点击页码分页查询
+    @GetMapping("/findmenbers2")
+    public String findMenber2(@RequestParam("username")String username,  @RequestParam(value = "urlAdress",required = false)String urlAdress, @RequestParam(value = "phone",required = false)String phone,@RequestParam(value = "typename",required = false) String typename,
+                             @RequestParam(value = "startdate",required = false)String startdate, @RequestParam(value = "enddate", required = false)String enddate, Model model, @RequestParam(value = "pageNum", defaultValue = "0") int pageNum, @RequestParam(value = "pageSize", defaultValue = "50") int pageSize){
+        logger.debug("---MemberController findMenber recive param username:{},type:{},urlAdress:{},phone:{},startdate:{},enddate:{}",username,typename,urlAdress,phone,startdate,enddate);
+        LocalUser localUser = mUserService.findUser(username);
+        logger.debug("---MemberController menberlist mUserService.findUser result localUser:{}",
+                     localUser);
+
+        String phone1 = "";
+        if (phone != "" && phone != null){
+            phone1 = phone.trim();
+        }
+        String urlAdress1 = "";
+        if (urlAdress != "" && urlAdress != null){
+            urlAdress1 = urlAdress.trim();
+        }
+        Page<Member> memberSet = mMemberService.findMenbers(localUser,urlAdress1,phone1,typename,startdate,enddate, pageNum, pageSize);
+        model.addAttribute("menbers",memberSet);
+        model.addAttribute("user",username);
+        model.addAttribute("phone",phone1);
         model.addAttribute("type",typename);
         model.addAttribute("starttime",startdate);
         model.addAttribute("endtime",enddate);
@@ -145,6 +174,7 @@ public class MemberController {
         Page<Member> memberSet = mMemberService.findMenbers(localUser,urlAdress1,phone1,typename,startdate,enddate, pageNum, pageSize);
         model.addAttribute("menbers",memberSet);
         model.addAttribute("user",username);
+        model.addAttribute("phone",phone1);
         model.addAttribute("type",typename);
         model.addAttribute("starttime",startdate);
         model.addAttribute("endtime",enddate);
@@ -176,6 +206,7 @@ public class MemberController {
         Page<Member> memberSet = mMemberService.findMenbers(localUser,urlAdress1,phone1,typename,startdate,enddate, pageNum, pageSize);
         model.addAttribute("menbers",memberSet);
         model.addAttribute("user",username);
+        model.addAttribute("phone",phone1);
         model.addAttribute("type",typename);
         model.addAttribute("starttime",startdate);
         model.addAttribute("endtime",enddate);
@@ -321,6 +352,30 @@ public class MemberController {
         return "menber/addtime";
     }
 
+    @PostMapping("/menber/findPhone")
+    @ResponseBody
+    public String findPhone(String phone){
+        String phone1 = "";
+        String result = null;
+        Member findMember = null;
+        if (phone != "" && phone != null){
+            phone1 = phone;
+            if (phone1.length() > 20){
+                findMember = mMemberDao.findBySubUrl(phone1);
+                if (findMember != null){
+                    result = "你的订阅地址是："+findMember.getPhonenumber();
+                    return result;
+                }
+            }else {
+                findMember = mMemberDao.findByPhonenumber(phone1);
+                if (findMember != null){
+                    result = findMember.getSubUrl();
+                    return result;
+                }
+            }
+        }
+        return "未查到用户信息，请重新输入···";
+    }
 
     //普通续费方法
     @LocalLock(key = "book:arg[1]")
