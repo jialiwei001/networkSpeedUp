@@ -363,13 +363,13 @@ public class MemberController {
             if (phone1.length() > 20){
                 findMember = mMemberDao.findBySubUrl(phone1);
                 if (findMember != null){
-                    result = "你的订阅地址是："+findMember.getPhonenumber();
+                    result = findMember.getPhonenumber();
                     return result;
                 }
             }else {
                 findMember = mMemberDao.findByPhonenumber(phone1);
                 if (findMember != null){
-                    result = findMember.getSubUrl();
+                    result = "你的订阅地址是："+findMember.getSubUrl();
                     return result;
                 }
             }
