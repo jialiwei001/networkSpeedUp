@@ -89,7 +89,7 @@
 						</div>
 						<div class="form-group">
 							<label>到期时间</label>
-							<input name="endTime" type="text" class="form-control" placeholder="zhangsan" th:value="${oneMenber.endtime}">
+							<input name="endTime" id="endTime" type="text" class="form-control" placeholder="zhangsan" th:value="${oneMenber.endtime}">
 						</div>
 						<div class="form-group">
 							<label>续费时间</label><br>
@@ -135,10 +135,10 @@
                 var  url= "/menber/editInfo"
                 var id = $("#menberid").val();
                 var name = $("#phone1").val();
-                var email = $("#email1").val();
+                var endTime = $("#endTime").val();
                 var totalData = $("#total1").val();
 
-                $.post(url ,{"id":id,"phone":name,"email":email,"totalData":totalData},function(data,status) {
+                $.post(url ,{"id":id,"phone":name,"endTime":endTime,"totalData":totalData},function(data,status) {
                     alert(data)
                 })
             }

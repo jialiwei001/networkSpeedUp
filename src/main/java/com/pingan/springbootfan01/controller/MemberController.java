@@ -27,6 +27,8 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -541,14 +543,15 @@ public class MemberController {
 
     @PostMapping("/menber/editInfo")
     @ResponseBody
-    public String editInfo(Integer id,String phone,String email,Model model,String totalData)
+    public String editInfo(Integer id,String phone,String endTime,Model model,String totalData)
     {
-        logger.debug("---MemberController editInfo rceive param id:{}, phone:{},email:{},totalData:{}",
+        logger.debug("---MemberController editInfo rceive param id:{}, phone:{},endTime:{},totalData:{}",
                      id,
                      phone,
-                     email,totalData);
+                     endTime,totalData);
         String fixPhone = "";
         String fixData = "";
+        String fixEndTime = "";
         //查找用户
         Member oneMenber = mMemberService.findOnebyId(id);
         if (oneMenber == null) {
@@ -576,10 +579,20 @@ public class MemberController {
                 logger.info("修改总流量失败...");
             }
         }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            Date parseDate = sdf.parse(endTime);
+            if (parseDate.compareTo(oneMenber.getEndtime()) != 0){
+                oneMenber.setEndtime(parseDate);
+                fixEndTime = "【结束时间】";
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         Member addResult = mMemberService.addMember(oneMenber);
         model.addAttribute("oneMenber",addResult);
         logger.debug("---MemberController editInfo execution complete");
-        return "成功修改了"+fixPhone+"-"+fixData;
+        return "成功修改了+"+fixPhone+"+"+fixData + "+" + fixEndTime;
     }
 
     @LocalLock(key = "book:arg[0]")
