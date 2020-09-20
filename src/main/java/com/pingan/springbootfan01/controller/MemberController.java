@@ -136,11 +136,11 @@ public class MemberController {
                      localUser);
 
         String phone1 = "";
-        if (phone != "" && phone != null){
+        if (!phone.equals("") && !phone.equals("null")){
             phone1 = phone.trim();
         }
         String urlAdress1 = "";
-        if (urlAdress != "" && urlAdress != null){
+        if (urlAdress != null && !urlAdress.equals("")){
             urlAdress1 = urlAdress.trim();
         }
         Page<Member> memberSet = mMemberService.findMenbers(localUser,urlAdress1,phone1,typename,startdate,enddate, pageNum, pageSize);
