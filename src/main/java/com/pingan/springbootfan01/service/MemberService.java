@@ -23,6 +23,6 @@ public interface MemberService {
 
     public Page<Member> findAll(LocalUser localUser, int pa, int si);
 
-    public Page<Member> findMenbers(LocalUser localUser,  String urlAdress, String phone,String type, String start,String end, int pa, int si);
+    public Page<Member> findMenbers(LocalUser localUser,  String urlAdress, String phone,String email,String type, String start,String end, int pa, int si);
    // public Page<Member> findTotalMenbers(LocalUser localUser, String start, String end, int pageNum, int pagesize);
 }

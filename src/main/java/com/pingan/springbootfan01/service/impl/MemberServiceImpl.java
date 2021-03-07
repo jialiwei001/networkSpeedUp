@@ -94,13 +94,14 @@ public class MemberServiceImpl implements MemberService {
     public Page<Member> findMenbers(LocalUser localUser,
                                 String urlAdress,
                                 String phone,
+                                String email,
                                 String type,
                                 String start,
                                 String end,
                                 int pageNum,
                                 int pagesize)
     {
-        logger.debug("---MemberServiceImpl findMenbers method recive param localUser:{} urlAdress:{},phone:{},type:{},startdate:{},enddate:{},pageNum:{},pagesize:{}",localUser,urlAdress,phone,type,start,end,pageNum,pagesize);
+        logger.debug("---MemberServiceImpl findMenbers method recive param localUser:{} urlAdress:{},phone:{},phone:{},type:{},startdate:{},enddate:{},pageNum:{},pagesize:{}",localUser,urlAdress,phone,email,type,start,end,pageNum,pagesize);
         PageRequest  page = PageRequest.of(pageNum, pagesize);
 
 //        if (localUser == null){
@@ -123,8 +124,11 @@ public class MemberServiceImpl implements MemberService {
                 if (!"".equals(phone) && phone != null){
                     predicates.add(criteriaBuilder.like(root.get("phonenumber"),"%"+phone+"%"));
                 }
+                if (!"".equals(email) && email != null){
+                    predicates.add(criteriaBuilder.like(root.get("menberEmail"),"%"+email+"%"));
+                }
                 if (!"".equals(urlAdress) && urlAdress != null){
-                    predicates.add(criteriaBuilder.equal(root.get("subUrl"),urlAdress));
+                    predicates.add(criteriaBuilder.like(root.get("subUrl"),"%"+urlAdress+"%"));
                 }
                 if (!"".equals(type) && !"null".equals(type) && type != null){
                     predicates.add(criteriaBuilder.equal(root.get("type"),type));

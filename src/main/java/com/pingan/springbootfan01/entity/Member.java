@@ -201,6 +201,6 @@ public class Member {
     }
 
     public String toString2() {
-        return "订阅地址: " + subUrl;
+        return subUrl;
     }
 }
