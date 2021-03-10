@@ -141,7 +141,7 @@ public class MemberController {
                      localUser);
 
         String phone1 = "";
-        if (phone != "" && phone != null){
+        if (phone != "" && phone != null && !phone.equalsIgnoreCase("null")){
             phone1 = phone.trim();
         }
         String email1 = "";
@@ -539,15 +539,25 @@ public class MemberController {
         notes.setNumber(1);
         notes.setContent(phone);
 
-        //String result = UtilTools.addtime1(oneMenber.getPhonenumber(), days);
-        String result  = mUserRegister.AddDays(oneMenber.getMenberEmail(), days,true);
-        if (result != null){         //result != null
-            return "续费失败，请重新续费";
-        }
+        boolean flag = true;
+
         Date endtime = oneMenber.getEndtime();
         //延长时间
         Calendar instance = Calendar.getInstance();
         instance.setTime(endtime);
+        //判断用户到期时间是否小于当前时间，如果小于，从当前时间开始计算添加时间
+        Calendar crruentTime = Calendar.getInstance();
+        crruentTime.setTime(new Date());
+        if (instance.before(crruentTime)){
+            instance.setTime(new Date());
+            flag = false;
+        }
+
+        //String result = UtilTools.addtime1(oneMenber.getPhonenumber(), days);
+        String result  = mUserRegister.AddDays(oneMenber.getMenberEmail(), days,flag);
+        if (result != null){         //result != null
+            return "续费失败，请重新续费";
+        }
         instance.add(Calendar.DAY_OF_MONTH,days);
         //设置结束时间
         oneMenber.setEndtime(instance.getTime());
