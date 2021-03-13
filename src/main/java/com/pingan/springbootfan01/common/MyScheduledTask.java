@@ -29,7 +29,7 @@ public class MyScheduledTask {
     private MemberDao mMemberDao;
 
 
-    @Scheduled(initialDelay = 1000000, fixedRate = 7200000)
+    @Scheduled(initialDelay = 1000, fixedRate = 7200000)
     public void sheduledTask1(){
         System.out.println("查询流量定时任务执行。。。。");
         List<Member> all = mMemberDao.findAll();
@@ -38,12 +38,24 @@ public class MyScheduledTask {
 
             String month = mUserRegister.DataUsageForTotal(member.getMenberEmail());
             String allTotal = mUserRegister.DataUsageForAllTotal(member.getMenberEmail());
+            String speed = mUserRegister.getSpeedLimit(member.getMenberEmail());
             if (month.equals("0.0") || month.length() > 30){
                 member.setT("0.0");
+                member.setN(0);
             }else {
                 member.setT(month.substring(0,month.indexOf(".")+4));
+                member.setN(Integer.valueOf(month.substring(0,month.indexOf("."))));
             }
-            member.setU(allTotal);
+            if (allTotal.length() > 20){
+                member.setU("查询错误");
+            }else {
+                member.setU(allTotal);
+            }
+            if (speed.equalsIgnoreCase("0.0")){
+                member.setD("---");
+            }else {
+                member.setD(speed);
+            }
             mMemberDao.save(member);
         });
 

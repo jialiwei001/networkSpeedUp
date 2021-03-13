@@ -51,79 +51,32 @@
 
 
         <main role="main" class="col-md-11 ml-sm-auto col-lg-11 pt-3 px-4">
-
             <div class="container">
                 <div class="card-deck mb-3 text-center">
-                    <div class="card mb-4 shadow-sm">
+                    <div class="card mb-4 shadow-sm" >
                         <div class="card-header">
-                            <h4 class="my-0 font-weight-normal">月卡</h4>
+                            <h4 class="my-0 font-weight-normal">创建会员</h4>
                         </div>
                         <div class="card-body">
-                            <h1 class="card-title pricing-card-title">¥30 <small class="text-muted">/月</small></h1>
                             <ul class="list-unstyled mt-3 mb-4">
                                 <li>
-                                    手机号：<input type="text" id="phoneid"  name="username" placeholder="请输入手机号" >
+                                    手机：<input type="text" id="phoneid4"  name="username" placeholder="请输入手机号" >
                                 </li>
+                                <li>
+                                    类型：<select name="type4" style="width: 148px;height: 30px" class="list-unstyled mt-3 mb-4" >
+                                    <option value="" disabled selected style='display:none;'></option>
+                                    <option>月卡</option>
+                                    <option>季卡</option>
+                                    <option>半年卡</option>
+                                    <option>年卡</option>
+                                </select>
+                                </li>
+                                <li>创建会员</li>
                                 <li>
                                     <input type="hidden" id="iduser"  name="phone"  th:value="${session.loginUser}">
                                 </li>
-
-                                <li>创建月卡专区</li>
                             </ul>
-                            <button type="button" class="btn btn-lg btn-block btn-primary" onclick="createMonth()">创建月卡</button>
-                        </div>
-                    </div>
-                    <div class="card mb-4 shadow-sm">
-                        <div class="card-header">
-                            <h4 class="my-0 font-weight-normal">季卡</h4>
-                        </div>
-                        <div class="card-body">
-                            <h1 class="card-title pricing-card-title">¥90 <small class="text-muted">/季</small></h1>
-                            <ul class="list-unstyled mt-3 mb-4">
-                                <li>
-                                    手机号：<input type="text" id="phoneid2"  name="username" placeholder="请输入手机号" >
-                                </li>
-                                <li>创建季卡专区</li>
-                            </ul>
-                            <button type="button" class="btn btn-lg btn-block btn-primary" onclick="createQuarter()">创建季卡</button>
-                        </div>
-                    </div>
-                    <div class="card mb-4 shadow-sm">
-                        <div class="card-header">
-                            <h4 class="my-0 font-weight-normal">半年卡</h4>
-                        </div>
-                        <div class="card-body">
-                            <h1 class="card-title pricing-card-title">¥180 <small class="text-muted">/半年</small></h1>
-                            <ul class="list-unstyled mt-3 mb-4">
-                                <li>
-                                    手机号：<input type="text" id="phoneid3"  name="username" placeholder="请输入手机号" >
-                                </li>
-                                <li>创建半年卡专区</li>
-                            </ul>
-                            <button type="button" class="btn btn-lg btn-block btn-primary" onclick="createHalfYear()">创建年卡</button>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="container">
-                <div class="card-deck mb-3 text-center">
-                    <div class="card mb-4 shadow-sm">
-                        <div class="card-header">
-                            <h4 class="my-0 font-weight-normal">年卡</h4>
-                        </div>
-                        <div class="card-body">
-                            <h1 class="card-title pricing-card-title">¥360 <small class="text-muted">/年</small></h1>
-                            <ul class="list-unstyled mt-3 mb-4">
-                                <li>
-                                    手机号：<input type="text" id="phoneid4"  name="username" placeholder="请输入手机号" >
-                                </li>
-                                <li>创建年卡专区</li>
-                                <div style="width: 148px;height: 30px">
-                                </div>
-                            </ul>
-                            <button type="button" class="btn btn-lg btn-block btn-primary" onclick="createYear()">创建年卡</button>
+                            <button type="button" class="btn btn-lg btn-block btn-primary" onclick="createMember()">一键创建</button>
                         </div>
                     </div>
                     <div class="card mb-4 shadow-sm">
@@ -244,85 +197,13 @@
 <script type="text/javascript" src="asserts/js/Chart.min.js" th:src="@{/asserts/js/Chart.min.js}"></script>
 <script>
 
-    function createMonth() {
+    function createMember() {
         var  url= "/localUser/createMonth"
-        var phone = $("#phoneid").val();
-        var name = $("#iduser").val();
-
-        $.post(url ,{"username":name,"phone":phone,"type":"月卡",},function(data,status) {
-
-            // 创建元素用于复制
-            var aux = document.createElement("input");
-           // 获取复制内容
-            var content = data
-            // 设置元素内容
-            aux.setAttribute("value", content);
-            // 将元素插入页面进行调用
-            document.body.appendChild(aux);
-            // 复制内容
-            aux.select();
-            // 将内容复制到剪贴板
-            document.execCommand("copy");
-            // 删除创建元素
-            document.body.removeChild(aux);
-            alert(data)
-        })
-    }
-
-    function createQuarter() {
-        var  url= "/localUser/createMonth"
-        var phone = $("#phoneid2").val();
-        var name = $("#iduser").val();
-
-        $.post(url ,{"username":name,"phone":phone,"type":"季卡",},function(data,status) {
-            // 创建元素用于复制
-            var aux = document.createElement("input");
-            // 获取复制内容
-            var content = data
-            // 设置元素内容
-            aux.setAttribute("value", content);
-            // 将元素插入页面进行调用
-            document.body.appendChild(aux);
-            // 复制内容
-            aux.select();
-            // 将内容复制到剪贴板
-            document.execCommand("copy");
-            // 删除创建元素
-            document.body.removeChild(aux);
-            alert(data)
-        })
-    }
-
-    function createHalfYear() {
-        var  url= "/localUser/createMonth"
-        var phone = $("#phoneid3").val();
-        var name = $("#iduser").val();
-
-        $.post(url ,{"username":name,"phone":phone,"type":"半年卡",},function(data,status) {
-            // 创建元素用于复制
-            var aux = document.createElement("input");
-            // 获取复制内容
-            var content = data
-            // 设置元素内容
-            aux.setAttribute("value", content);
-            // 将元素插入页面进行调用
-            document.body.appendChild(aux);
-            // 复制内容
-            aux.select();
-            // 将内容复制到剪贴板
-            document.execCommand("copy");
-            // 删除创建元素
-            document.body.removeChild(aux);
-            alert(data)
-        })
-    }
-
-    function createYear() {
-        var  url= "/localUser/createMonth"
+        var type1 = $("select[name='type4']").val();
         var phone = $("#phoneid4").val();
         var name = $("#iduser").val();
 
-        $.post(url ,{"username":name,"phone":phone,"type":"年卡",},function(data,status) {
+        $.post(url ,{"username":name,"phone":phone,"type":type1,},function(data,status) {
             // 创建元素用于复制
             var aux = document.createElement("input");
             // 获取复制内容
@@ -379,7 +260,7 @@
 
     function addTime() {
         var  url= "/menber/addtime"
-        var number1 = $("select").val();
+        var number1 = $("select[name='addTime1']").val();
         var phone = $("#phoneid7").val();
         var username = $("#iduser").val();
 
@@ -411,34 +292,6 @@
         })
     }
 
-
-    /*var ctx = document.getElementById("myChart");
-    var myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-            datasets: [{
-                data: [15339, 21345, 18483, 24003, 23489, 24092, 12034],
-                lineTension: 0,
-                backgroundColor: 'transparent',
-                borderColor: '#007bff',
-                borderWidth: 4,
-                pointBackgroundColor: '#007bff'
-            }]
-        },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: false
-                    }
-                }]
-            },
-            legend: {
-                display: false,
-            }
-        }
-    });*/
 </script>
 
 </body>

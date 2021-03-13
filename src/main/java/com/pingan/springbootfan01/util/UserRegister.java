@@ -217,6 +217,32 @@ public class UserRegister {
 		return dataUsage;
 	}
 
+	public String getSpeedLimit(String email) {
+		String speed= null;
+		double allTotal=0;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+			String sql="select node_speedlimit from user where email='"+email+"'";
+			PreparedStatement statement = conn.prepareStatement(sql);
+			System.out.println(sql);
+			ResultSet rs =statement.executeQuery();
+			while(rs.next()) {
+				allTotal =Double.parseDouble(rs.getString("node_speedlimit"));
+				System.out.println(rs.getString("node_speedlimit"));
+			}
+			speed=allTotal+"";
+			statement.close();
+			conn.close();
+			return speed;
+		} catch (ClassNotFoundException e) {
+			speed= e.getMessage();
+		}catch (SQLException e) {
+			speed = e.getMessage();
+		}
+		return speed;
+	}
+
 	//用户xiugaizongliuliang
 	public String fixTotalData(String email,String totalData)
 	{

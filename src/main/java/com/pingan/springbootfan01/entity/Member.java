@@ -34,6 +34,7 @@ public class Member {
     //邮箱
     @NotNull
     private String menberEmail;
+    //订阅地址
     @NotNull
     private String subUrl;
     //手机号
@@ -47,17 +48,19 @@ public class Member {
     //会员类型
     @NotNull
     private              String    type;
-    //数量
+    //续费次数
     @NotNull
     private              int       amount;
 
     private Integer n;
-
+    //总流量
     private String u;
 
+    //限速字段
     private String d;
-
+    //已用流量
     private String t;
+
     //外键 mLocalUser
     @ManyToOne
     @JoinColumn(name = "cid")

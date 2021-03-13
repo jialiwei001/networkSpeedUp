@@ -95,13 +95,14 @@ public class MemberServiceImpl implements MemberService {
                                 String urlAdress,
                                 String phone,
                                 String email,
+                                String sortOrder,
                                 String type,
                                 String start,
                                 String end,
                                 int pageNum,
                                 int pagesize)
     {
-        logger.debug("---MemberServiceImpl findMenbers method recive param localUser:{} urlAdress:{},phone:{},phone:{},type:{},startdate:{},enddate:{},pageNum:{},pagesize:{}",localUser,urlAdress,phone,email,type,start,end,pageNum,pagesize);
+        logger.debug("---MemberServiceImpl findMenbers method recive param localUser:{} urlAdress:{},phone:{},email:{},sortOrder:{},type:{},startdate:{},enddate:{},pageNum:{},pagesize:{}",localUser,urlAdress,phone,email,sortOrder,type,start,end,pageNum,pagesize);
         PageRequest  page = PageRequest.of(pageNum, pagesize);
 
 //        if (localUser == null){
@@ -139,6 +140,9 @@ public class MemberServiceImpl implements MemberService {
                 if (!"".equals(end) && !"null".equals(end) && end != null){
                     predicates.add(criteriaBuilder.lessThan(root.get("endtime").as(String.class),end));
                     query.orderBy(criteriaBuilder.asc(root.get("endtime")));
+                }
+                if (sortOrder!= null && sortOrder.equalsIgnoreCase("使用流量")){
+                    query.orderBy(criteriaBuilder.desc(root.get("n")));
                 }
                 return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
             }

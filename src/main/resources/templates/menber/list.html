@@ -110,6 +110,15 @@
                         <input type="text" name="urlAdress" style="width: 480px"  class="form-control"
                                id="exampleInputEmail2" placeholder="请输入订阅地址">
                     </div>
+                    <div style="width: 10px"></div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail2">排序方式: </label>
+                        <select name="sortOrder" style="width: 170px;" class="form-control" >
+                            <option value="" disabled selected style='display:none;'></option>
+                            <option>到期时间</option>
+                            <option>使用流量</option>
+                        </select>
+                    </div>
                     <div style="width: 1px"></div>
                     <button type="submit" class="btn btn-success">查询</button>
                 </form>
@@ -131,6 +140,7 @@
                         <th>会员类型</th>
                         <th>已用流量</th>
                         <th>总流量</th>
+                        <th>速度</th>
                         <th>次数</th>
 
                         <th>操作</th>
@@ -149,6 +159,7 @@
                         <td th:text="${menber.type}"></td>
                         <td th:text="${menber.t}"></td>
                         <td th:text="${menber.u}"></td>
+                        <td th:text="${menber.d}"></td>
                         <td th:text="${menber.amount}"></td>
                         <td>
                             <a class="btn btn-sm btn-primary"
@@ -165,24 +176,24 @@
                     <!-- 首页"@{/menber?id=1(username=${session.loginUser})}" -->
                     <li>
                         <a class="btn btn-sm btn-primary"
-                           th:href="'/findmenbers2?username='+${user}+'&phone='+${phone}+'&typename='+${type}+'&startdate='+${starttime}+'&enddate='+${endtime}+'&pageNum=0'">首页</a>
+                           th:href="'/findmenbers2?username='+${user}+'&phone='+${phone}+'&sortOrder='+${sort}+'&typename='+${type}+'&startdate='+${starttime}+'&enddate='+${endtime}+'&pageNum=0'">首页</a>
                     </li>
 
                     <!-- 上一页 -->
                     <li th:if="${menbers.hasPrevious()}">
                         <a class="btn btn-sm btn-primary"
-                           th:href="'/findmenbers2?username='+${user}+'&phone='+${phone}+'&typename='+${type}+'&startdate='+${starttime}+'&enddate='+${endtime}+'&pageNum='+ ${menbers.previousPageable().getPageNumber()}"
+                           th:href="'/findmenbers2?username='+${user}+'&phone='+${phone}+'&sortOrder='+${sort}+'&typename='+${type}+'&startdate='+${starttime}+'&enddate='+${endtime}+'&pageNum='+ ${menbers.previousPageable().getPageNumber()}"
                            th:text="上一页"></a>
                     </li>
 
                     <!-- 中间页 -->
                     <li th:each="pageNum:${#numbers.sequence(0, menbers.getTotalPages() - 1)}">
                         <a class="btn btn-sm btn-primary"
-                           th:href="'/findmenbers2?username='+${user}+'&phone='+${phone}+'&typename='+${type}+'&startdate='+${starttime}+'&enddate='+${endtime}+'&pageNum=' + ${pageNum}"
+                           th:href="'/findmenbers2?username='+${user}+'&phone='+${phone}+'&sortOrder='+${sort}+'&typename='+${type}+'&startdate='+${starttime}+'&enddate='+${endtime}+'&pageNum=' + ${pageNum}"
                            th:text="${pageNum + 1}"
                            th:if="${pageNum ne menbers.pageable.getPageNumber()}"></a>
                         <a class="btn btn-sm btn-primary"
-                           th:href="'/findmenbers2?username='+${user}+'&phone='+${phone}+'&typename='+${type}+'&startdate='+${starttime}+'&enddate='+${endtime}+'&pageNum=' + ${pageNum}"
+                           th:href="'/findmenbers2?username='+${user}+'&phone='+${phone}+'&sortOrder='+${sort}+'&typename='+${type}+'&startdate='+${starttime}+'&enddate='+${endtime}+'&pageNum=' + ${pageNum}"
                            th:text="${pageNum + 1}"
                            th:if="${pageNum eq menbers.pageable.getPageNumber()}"
                            th:style="'font-weight:bold;background: #6faed9;'"></a>
@@ -191,14 +202,14 @@
                     <!-- 下一页 -->
                     <li th:if="${menbers.hasNext()}">
                         <a class="btn btn-sm btn-primary"
-                           th:href="'/findmenbers2?username='+${user}+'&phone='+${phone}+'&typename='+${type}+'&startdate='+${starttime}+'&enddate='+${endtime}+'&pageNum='+ ${menbers.nextPageable().getPageNumber()}"
+                           th:href="'/findmenbers2?username='+${user}+'&phone='+${phone}+'&sortOrder='+${sort}+'&typename='+${type}+'&startdate='+${starttime}+'&enddate='+${endtime}+'&pageNum='+ ${menbers.nextPageable().getPageNumber()}"
                            th:text="下一页"></a>
                     </li>
 
                     <!-- 尾页 -->
                     <li>
                         <a class="btn btn-sm btn-primary"
-                           th:href="'/findmenbers2?username='+${user}+'&phone='+${phone}+'&typename='+${type}+'&startdate='+${starttime}+'&enddate='+${endtime}+'&pageNum=' + ${menbers.getTotalPages() - 1}">尾页</a>
+                           th:href="'/findmenbers2?username='+${user}+'&phone='+${phone}+'&sortOrder='+${sort}+'&typename='+${type}+'&startdate='+${starttime}+'&enddate='+${endtime}+'&pageNum=' + ${menbers.getTotalPages() - 1}">尾页</a>
                     </li>
 
                 </ul>
