@@ -265,5 +265,27 @@ public class UserRegister {
 
 		return result;
 	}
+	//给用户限速
+	public String fixSpeedLimit(String email,String speed)
+	{
+		String result=null;
+		try {
+			Double total=Double.valueOf(speed);
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+			String fixTotalData="update user set node_speedlimit = \""+total+"\"  where email=\""+email+"\"";
+			PreparedStatement statement = conn.prepareStatement(fixTotalData);
+			statement.executeUpdate();
+
+			conn.close();
+			statement.close();
+		} catch (ClassNotFoundException e) {
+			result= e.getMessage();
+		}catch (SQLException e) {
+			result = e.getMessage();
+		}
+
+		return result;
+	}
 }
 

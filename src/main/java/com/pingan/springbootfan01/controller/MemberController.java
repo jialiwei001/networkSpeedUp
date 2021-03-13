@@ -618,14 +618,17 @@ public class MemberController {
 
     @PostMapping("/menber/editInfo")
     @ResponseBody
-    public String editInfo(Integer id,String phone,String endTime,Model model,String totalData)
+    public String editInfo(Integer id,String phone,String endTime,String speed,Model model,String totalData)
     {
-        logger.debug("---MemberController editInfo rceive param id:{}, phone:{},endTime:{},totalData:{}",
+        logger.debug("---MemberController editInfo rceive param id:{}, phone:{},endTime:{},speed:{},totalData:{}",
                      id,
                      phone,
-                     endTime,totalData);
+                     endTime,
+                     speed,
+                     totalData);
         String fixPhone = "";
         String fixData = "";
+        String fixSpeed = "";
         String fixEndTime = "";
         //查找用户
         Member oneMenber = mMemberService.findOnebyId(id);
@@ -654,6 +657,15 @@ public class MemberController {
                 logger.info("修改总流量失败...");
             }
         }
+        if (!speed.equals(oneMenber.getD())){
+            String result = mUserRegister.fixSpeedLimit(oneMenber.getMenberEmail(), speed);
+            if (result == null){
+                oneMenber.setD(speed);
+                fixSpeed = "【用户速度】";
+            }else {
+                logger.info("修改用户速度失败...");
+            }
+        }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
             Date parseDate = sdf.parse(endTime);
@@ -667,7 +679,7 @@ public class MemberController {
         Member addResult = mMemberService.addMember(oneMenber);
         model.addAttribute("oneMenber",addResult);
         logger.debug("---MemberController editInfo execution complete");
-        return "成功修改了+"+fixPhone+"+"+fixData + "+" + fixEndTime;
+        return "成功修改了+"+fixPhone+"+"+fixData + "+" + fixEndTime+"+"+fixSpeed;
     }
 
     @LocalLock(key = "book:arg[0]")
