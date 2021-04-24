@@ -648,7 +648,7 @@ public class MemberController {
                 logger.debug("---MemberController editInfo 手机号被占用...");
             }
         }
-        if (!totalData.equals(oneMenber.getU())){
+        if (totalData != null && !totalData.equals("") && !totalData.equals(oneMenber.getU())){
             String result = mUserRegister.fixTotalData(oneMenber.getMenberEmail(), totalData);
             if (result == null){
                 oneMenber.setU(totalData);
@@ -657,7 +657,7 @@ public class MemberController {
                 logger.info("修改总流量失败...");
             }
         }
-        if (!speed.equals(oneMenber.getD())){
+        if (speed != null && !speed.equals("") && !speed.equals(oneMenber.getD())){
             String result = mUserRegister.fixSpeedLimit(oneMenber.getMenberEmail(), speed);
             if (result == null){
                 oneMenber.setD(speed);

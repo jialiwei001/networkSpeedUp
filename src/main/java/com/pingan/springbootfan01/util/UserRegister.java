@@ -21,7 +21,7 @@ import java.util.Date;
 public class UserRegister {
 	HttpClient httpClient = new HttpClient();
 	//数据库链接字段
-	String URL = "jdbc:mysql://angrybird.top:3306/vpn";
+	String URL = "jdbc:mysql://angrybird.top:3306/vpn?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT";
 	String USER = "abcd";
 	String PASSWORD = "jiaoliwei1234";
 	//用户注册方法
