@@ -168,6 +168,24 @@
                     </div>
                     <div class="card mb-4 shadow-sm">
 
+                        <div class="card-header">
+                            <h4 class="my-0 font-weight-normal">删除账户</h4>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled mt-3 mb-4">
+                                <li>
+                                    账号：<input type="text" id="phoneid9"  name="username" placeholder="请输入手机号/订阅地址" >
+                                </li>
+                                <div style="width: 148px;height: 35px">
+                                </div>
+                                <li>
+                                    请慎重删除账户
+                                </li>
+                                <div style="width: 148px;height: 35px">
+                                </div>
+                            </ul>
+                            <button type="button" class="btn btn-lg btn-block btn-primary" onclick="deleteUser()">一键删除</button>
+                        </div>
                     </div>
 
                 </div>
@@ -265,6 +283,14 @@
         var username = $("#iduser").val();
 
         $.post(url ,{"username":username,"phone":phone,"type":number1,},function(data,status) {
+            alert(data)
+        })
+    }
+
+    function deleteUser() {
+        var  url= "/menber/deleteMemberByUser"
+        var username = $("#phoneid9").val();
+        $.post(url ,{"username":username,},function(data,status) {
             alert(data)
         })
     }

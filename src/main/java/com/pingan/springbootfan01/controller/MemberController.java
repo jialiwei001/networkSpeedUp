@@ -277,6 +277,49 @@ public class MemberController {
     }
 
 
+    //通过账号或订阅地址删除用户和计费记录
+    @PostMapping("/menber/deleteMemberByUser")
+    @ResponseBody
+    @Transactional
+    public String deleteMemberByUser(String username){
+        String phone1 = "";
+        Member findMember = null;
+        String resultData = "";
+        if (username != "" && username != null){
+            phone1 = username;
+            if (phone1.length() > 30){
+                if (mMemberDao.findBySubUrl(phone1) != null){
+                    findMember = mMemberDao.findBySubUrl(phone1);
+                }else {
+                    return "没有查到用户,请重新输入";
+                }
+
+            }else {
+                findMember = mMemberDao.findByPhonenumber(phone1);
+                if (mMemberDao.findByPhonenumber(phone1) != null){
+                    findMember = mMemberDao.findByPhonenumber(phone1);
+                }else {
+                    return "没有查到用户,请重新输入";
+                }
+            }
+        }
+        if (findMember != null){
+            String result = mUserRegister.AddDays(findMember.getMenberEmail(), -366,true);
+            if (result == null){
+//            Notes  byContent  = mNotesDao.findByContent(findresult.getPhonenumber());
+//            if (byContent != null){
+//                mNotesDao.deleteById(byContent.getId());
+//            }
+                mMemberDao.deleteById(findMember.getId());
+                resultData = "成功删除用户：【"+findMember.getPhonenumber()+"】";
+            }else {
+                resultData = "删除用户失败，请查询原因";
+                System.out.println("---MemberController  deleteMenberAndNote  查询泰坦星user表失败,删除失败");
+            }
+        }
+        return resultData;
+    }
+
     //创建卡
     @LocalLock(key = "book:arg[1]")
     @PostMapping("/localUser/createMonth")
@@ -369,6 +412,13 @@ public class MemberController {
             member.setType(type1);
             //设置数量
             member.setAmount(0);
+            //查询数据库并设置总流量
+            String allTotal = mUserRegister.DataUsageForAllTotal(email);
+            if (allTotal.length() > 20){
+                member.setU("查询错误");
+            }else {
+                member.setU(allTotal);
+            }
             //设置当前时间
             //获取当前时间
             Date cureTime = new Date();
@@ -420,19 +470,21 @@ public class MemberController {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         if (phone != "" && phone != null){
             phone1 = phone;
-            if (phone1.length() > 20){
+            if (phone1.length() > 30){
                 findMember = mMemberDao.findBySubUrl(phone1);
                 String endDate = sdf.format(findMember.getEndtime());
+                String allTotal = findMember.getU();
                 if (findMember != null){
                     result = "你的账户名是："+findMember.getPhonenumber();
-                    return result+"\n"+"到期时间:【"+endDate+"】";
+                    return result+"\r\n"+"到期时间:【"+endDate+"】"+"\r\n"+"总流量为：【"+allTotal+"】";
                 }
             }else {
                 findMember = mMemberDao.findByPhonenumber(phone1);
                 String endDate = sdf.format(findMember.getEndtime());
+                String allTotal = findMember.getU();
                 if (findMember != null){
                     result = "你的订阅地址是："+findMember.getSubUrl();
-                    return result+"\n"+"到期时间:【"+endDate+"】";
+                    return result+"\r\n"+"到期时间:【"+endDate+"】"+"\r\n"+"总流量为：【"+allTotal+"】";
                 }
             }
         }
