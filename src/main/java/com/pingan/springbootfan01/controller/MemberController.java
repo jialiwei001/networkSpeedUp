@@ -507,7 +507,7 @@ public class MemberController {
         //查找用户
         String phone1 = phone.trim();
         Member oneMenber = null;
-        if (phone1.length() > 20){
+        if (phone1.length() > 30){
             oneMenber = mMemberDao.findBySubUrl(phone1);
             if (oneMenber == null){
                 return "查找订阅地址失败,请输入正确的订阅地址";
@@ -569,9 +569,17 @@ public class MemberController {
             return "续费失败，请重新续费";
         }
 
-        instance.add(Calendar.DAY_OF_MONTH,days);
-        //设置结束时间
-        oneMenber.setEndtime(instance.getTime());
+        //查询用户在泰坦星中的过期时间
+        String endTime  = mUserRegister.findMemberEndTime(oneMenber.getMenberEmail());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            Date formatEndTime = dateFormat.parse(endTime);
+            //设置结束时间
+            oneMenber.setEndtime(formatEndTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        //instance.add(Calendar.DAY_OF_MONTH,days);
         //续费后更改卡类型
         UtilTools.fixUserType(oneMenber);
         oneMenber.setAmount(oneMenber.getAmount()+1);
@@ -579,7 +587,7 @@ public class MemberController {
         notes.setCreateTime(new Date());
         mNotesDao.save(notes);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String endDate = sdf.format(oneMenber.getEndtime());
+        String endDate = sdf.format(addResult.getEndtime());
 
         return "账户:【"+oneMenber.getPhonenumber() +"】成功续费【"+typeName+"】" +"~~"+"\n"+"下次到期是:【"+endDate+"】"+"~~";
 
@@ -650,19 +658,25 @@ public class MemberController {
         if (result != null){         //result != null
             return "续费失败，请重新续费";
         }
-        instance.add(Calendar.DAY_OF_MONTH,days);
-        //设置结束时间
-        oneMenber.setEndtime(instance.getTime());
-
+        //查询用户在泰坦星中的过期时间
+        String endTime  = mUserRegister.findMemberEndTime(oneMenber.getMenberEmail());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            Date formatEndTime = dateFormat.parse(endTime);
+            //设置结束时间
+            oneMenber.setEndtime(formatEndTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        //instance.add(Calendar.DAY_OF_MONTH,days);
         //续费后更改卡类型
         UtilTools.fixUserType(oneMenber);
         oneMenber.setAmount(oneMenber.getAmount()+1);
         Member addResult = mMemberService.addMember(oneMenber);
         notes.setCreateTime(new Date());
         mNotesDao.save(notes);
-
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String endDate = sdf.format(oneMenber.getEndtime());
+        String endDate = sdf.format(addResult.getEndtime());
         return "账户:【"+oneMenber.getPhonenumber() +"】成功续时"+"【"+time+"天】"+"~~"+"\n"+"下次到期是:【"+endDate+"】"+"~~";
 
     }

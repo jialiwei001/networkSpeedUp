@@ -108,6 +108,32 @@ public class UserRegister {
     	
     	return result;
     }
+	//用户续费
+	public String findMemberEndTime(String email)
+	{
+		String result=null;
+		String expire_in="";
+		try {
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+			String getExpireDate_Sql="select expire_in from user where email=\""+email+"\"";
+			PreparedStatement statement = conn.prepareStatement(getExpireDate_Sql);
+			ResultSet rs =statement.executeQuery();
+			while(rs.next()) {
+				expire_in =rs.getString("expire_in");
+			}
+			rs.close();
+			return expire_in;
+		} catch (ClassNotFoundException e) {
+			result= e.getMessage();
+		}catch (SQLException e) {
+			result = e.getMessage();
+		}
+
+		return expire_in;
+	}
+
     //获取用户订阅TOKEN
     private  String GetToken(String email,int days) {
     	String endDate=GetDate_AfterAddDays(new Date(),days);
