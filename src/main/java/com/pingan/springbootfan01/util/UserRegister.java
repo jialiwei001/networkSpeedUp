@@ -152,10 +152,15 @@ public class UserRegister {
 			AddDays_Sql="update user SET expire_in =\""+endDate+"\",class_expire=\""+endDate+"\",class=2,transfer_enable=322122547200,node_connector=2 where email=\""+email+"\"";
 			System.out.println(AddDays_Sql);
 			statement = conn.prepareStatement(AddDays_Sql);
-			statement.executeUpdate();
+			int first = statement.executeUpdate();
+			System.out.println("第一次设置流量的执行结果= "+first);
+			String fixTotalData="update user set transfer_enable = 322122547200  where email=\""+email+"\"";
+			PreparedStatement statement2 = conn.prepareStatement(fixTotalData);
+			statement2.executeUpdate();
 			conn.close();
 			statement.close();
-		} catch (ClassNotFoundException e) {			
+			statement2.close();
+		} catch (ClassNotFoundException e) {
 			token= e.getMessage();
 		}catch (SQLException e) {			
 			token = e.getMessage();

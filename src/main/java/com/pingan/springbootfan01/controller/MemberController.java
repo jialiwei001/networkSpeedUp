@@ -415,7 +415,7 @@ public class MemberController {
             //查询数据库并设置总流量
             String allTotal = mUserRegister.DataUsageForAllTotal(email);
             if (allTotal.length() > 20){
-                member.setU("查询错误");
+                member.setU("创建失败");
             }else {
                 member.setU(allTotal);
             }

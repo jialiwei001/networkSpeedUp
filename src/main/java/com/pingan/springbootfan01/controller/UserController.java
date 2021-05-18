@@ -142,6 +142,7 @@ public class UserController {
         logger.debug("---UserController deleteAllNote param username:{}",username);
         LocalUser user = mUserService.findUser(username);
 
+
         if (user != null){
             String phone = "";
             String start = "";

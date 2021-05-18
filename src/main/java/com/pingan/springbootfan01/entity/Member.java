@@ -204,6 +204,6 @@ public class Member {
     }
 
     public String toString2() {
-        return subUrl;
+        return subUrl +"\r\n"+ "总流量："+u;
     }
 }
