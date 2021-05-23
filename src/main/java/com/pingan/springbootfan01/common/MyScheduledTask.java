@@ -29,13 +29,20 @@ public class MyScheduledTask {
     private MemberDao mMemberDao;
 
 
-    @Scheduled(initialDelay = 10000000, fixedRate = 3000000)
+    @Scheduled(initialDelay = 1000000, fixedRate = 7200000)
     public void sheduledTask1(){
         System.out.println("查询流量定时任务执行。。。。");
         List<Member> all = mMemberDao.findAll();
 
         all.forEach(member -> {
 
+            //与泰坦星保持一致，删除获取或空用户
+            String userFlag = mUserRegister.findMemberIfNull(member.getMenberEmail());
+            if (userFlag.equals("isNull")){
+                mMemberDao.deleteById(member.getId());
+                System.out.println("定时任务删除了用户："+member.getPhonenumber());
+                return;
+            }
             String month = mUserRegister.DataUsageForTotal(member.getMenberEmail());
             String allTotal = mUserRegister.DataUsageForAllTotal(member.getMenberEmail());
             String speed = mUserRegister.getSpeedLimit(member.getMenberEmail());

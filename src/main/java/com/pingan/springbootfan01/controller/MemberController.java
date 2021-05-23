@@ -311,6 +311,15 @@ public class MemberController {
 //                mNotesDao.deleteById(byContent.getId());
 //            }
                 mMemberDao.deleteById(findMember.getId());
+                if (mNotesDao.findByContent(findMember.getPhonenumber()) != null){
+                    List<Notes> deleteNotes = mNotesDao.findByContent(findMember.getPhonenumber());
+                    for (Notes note:deleteNotes){
+                        if (note.getType().equals("月卡") || note.getType().equals("季卡") ||
+                                note.getType().equals("半年卡") || note.getType().equals("年卡") || note.getType().equals("试用卡")){
+                            mNotesDao.deleteById(note.getId());
+                        }
+                    }
+                }
                 resultData = "成功删除用户：【"+findMember.getPhonenumber()+"】";
             }else {
                 resultData = "删除用户失败，请查询原因";

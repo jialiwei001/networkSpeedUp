@@ -134,6 +134,33 @@ public class UserRegister {
 		return expire_in;
 	}
 
+	//用户续费
+	public String findMemberIfNull(String email)
+	{
+		String result= "";
+		try {
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+			String getExpireDate_Sql="select * from user where email=\""+email+"\"";
+			PreparedStatement statement = conn.prepareStatement(getExpireDate_Sql);
+			ResultSet rs =statement.executeQuery();
+			if (rs.next()) {
+				result = "notNull";
+			}else {
+				result = "isNull";
+			}
+			rs.close();
+			return result;
+		} catch (ClassNotFoundException e) {
+			result= e.getMessage();
+		}catch (SQLException e) {
+			result = e.getMessage();
+		}
+
+		return result;
+	}
+
     //获取用户订阅TOKEN
     private  String GetToken(String email,int days) {
     	String endDate=GetDate_AfterAddDays(new Date(),days);
@@ -204,6 +231,10 @@ public class UserRegister {
 				System.out.println(rs.getString("d"));
 			}
 			double day = DataUsageForToday(email);
+			if ((usage+day)  < 1083741){
+				System.out.println("-----------------------没有使用的账号-----------------------：");
+				return "0.0";
+			}
 			System.out.println("查询当天值："+day);
 			System.out.println("查询当月值："+usage);
 			usage=(day +usage)/1024/1024/1024;

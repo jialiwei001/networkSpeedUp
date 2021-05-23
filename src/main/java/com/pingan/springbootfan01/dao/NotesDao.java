@@ -20,7 +20,7 @@ import java.util.List;
 public interface NotesDao extends JpaRepository<Notes,Integer> {
     List<Notes>  findAll(Specification<Notes> specification);
 
-    Notes findByContent(String content);
+    List<Notes> findByContent(String content);
     void  deleteByContent(String content);
 
 }
