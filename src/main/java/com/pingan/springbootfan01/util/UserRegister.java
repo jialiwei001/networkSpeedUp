@@ -134,7 +134,7 @@ public class UserRegister {
 		return expire_in;
 	}
 
-	//用户续费
+	//查询泰坦星用户是否存在
 	public String findMemberIfNull(String email)
 	{
 		String result= "";
