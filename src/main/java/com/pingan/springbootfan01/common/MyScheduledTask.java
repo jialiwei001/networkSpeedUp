@@ -1,13 +1,18 @@
 package com.pingan.springbootfan01.common;
 
 import com.pingan.springbootfan01.dao.MemberDao;
+import com.pingan.springbootfan01.dao.NotesDao;
+import com.pingan.springbootfan01.entity.LocalUser;
 import com.pingan.springbootfan01.entity.Member;
+import com.pingan.springbootfan01.entity.Notes;
+import com.pingan.springbootfan01.service.UserService;
 import com.pingan.springbootfan01.util.UserRegister;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.List;
 
 /*
@@ -28,18 +33,32 @@ public class MyScheduledTask {
     @Autowired
     private MemberDao mMemberDao;
 
+    @Autowired
+    private UserService mUserService;
+
+    @Autowired
+    private NotesDao mNotesDao;
+
 
     @Scheduled(initialDelay = 1000000, fixedRate = 7200000)
     public void sheduledTask1(){
         System.out.println("查询流量定时任务执行。。。。");
         List<Member> all = mMemberDao.findAll();
+        LocalUser localUser = mUserService.findUser("system");
 
         all.forEach(member -> {
 
             //与泰坦星保持一致，删除获取或空用户
             String userFlag = mUserRegister.findMemberIfNull(member.getMenberEmail());
             if (userFlag.equals("isNull")){
+                Notes notes = new Notes();
+                notes.setLocalUser(localUser);
+                notes.setType("删除用户");
+                notes.setNumber(1);
+                notes.setContent(member.getPhonenumber());
                 mMemberDao.deleteById(member.getId());
+                notes.setCreateTime(new Date());
+                mNotesDao.save(notes);
                 System.out.println("定时任务删除了用户："+member.getPhonenumber());
                 return;
             }

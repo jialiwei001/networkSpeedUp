@@ -291,8 +291,9 @@
 
     function deleteUser() {
         var  url= "/menber/deleteMemberByUser"
-        var username = $("#phoneid9").val();
-        $.post(url ,{"username":username,},function(data,status) {
+        var username = $("#iduser").val();
+        var phone = $("#phoneid9").val();
+        $.post(url ,{"username":username,"phone":phone,},function(data,status) {
             alert(data)
         })
     }

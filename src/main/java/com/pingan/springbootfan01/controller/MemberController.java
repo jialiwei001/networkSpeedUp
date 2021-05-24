@@ -281,12 +281,21 @@ public class MemberController {
     @PostMapping("/menber/deleteMemberByUser")
     @ResponseBody
     @Transactional
-    public String deleteMemberByUser(String username){
+    public String deleteMemberByUser(@RequestParam(value = "username",required = false)String username,@RequestParam(value = "phone",required = false)String phone){
+        logger.debug("---MemberController deleteMemberByUser recive param username:{},phone:{}",username,phone);
+        LocalUser localUser = mUserService.findUser(username);
+        logger.debug("---MemberController deleteMemberByUser menberlist mUserService.findUser result localUser:{}",
+                localUser);
+        if (localUser == null){
+            return "会员不存在,请重新登录";
+        }
         String phone1 = "";
+        if (phone != "" && phone != null){
+            phone1 = phone.trim();
+        }
         Member findMember = null;
         String resultData = "";
-        if (username != "" && username != null){
-            phone1 = username;
+        if (phone1 != "" && phone1 != null){
             if (phone1.length() > 30){
                 if (mMemberDao.findBySubUrl(phone1) != null){
                     findMember = mMemberDao.findBySubUrl(phone1);
@@ -316,6 +325,13 @@ public class MemberController {
                     for (Notes note:deleteNotes){
                         if (note.getType().equals("月卡") || note.getType().equals("季卡") ||
                                 note.getType().equals("半年卡") || note.getType().equals("年卡") || note.getType().equals("试用卡")){
+                            Notes notes = new Notes();
+                            notes.setLocalUser(localUser);
+                            notes.setType("删除用户");
+                            notes.setNumber(1);
+                            notes.setContent(note.getContent());
+                            notes.setCreateTime(new Date());
+                            mNotesDao.save(notes);
                             mNotesDao.deleteById(note.getId());
                         }
                     }
