@@ -496,20 +496,38 @@ public class MemberController {
         if (phone != "" && phone != null){
             phone1 = phone;
             if (phone1.length() > 30){
+                if (mMemberDao.findByPhonenumber(phone1) == null){
+                    return "未查到用户信息，请重新输入···";
+                }
                 findMember = mMemberDao.findBySubUrl(phone1);
+                String startTime = sdf.format(findMember.getStarttime());
                 String endDate = sdf.format(findMember.getEndtime());
                 String allTotal = findMember.getU();
+                String useTotal = findMember.getT();
+                LocalUser localUser = findMember.getLocalUser();
+                String createUser = localUser.getUsername();
+                String speed = findMember.getD();
+                int times = findMember.getAmount();
                 if (findMember != null){
                     result = "你的账户名是："+findMember.getPhonenumber();
-                    return result+"\r\n"+"到期时间:【"+endDate+"】"+"\r\n"+"总流量为：【"+allTotal+"】";
+                    return result+"\r\n"+"开始时间:【"+startTime+"】"+"\r\n"+"到期时间:【"+endDate+"】"+"\r\n"+"总流量为:【"+allTotal+"G】"+"\r\n"+"已用流量:【"+useTotal+"G】"+"\r\n"+"创建人是:【"+createUser+"】"+"\r\n"+"是否限速:【"+speed+"】"+"\r\n"+"续费次数:【"+times+"】";
                 }
             }else {
+                if (mMemberDao.findByPhonenumber(phone1) == null){
+                    return "未查到用户信息，请重新输入···";
+                }
                 findMember = mMemberDao.findByPhonenumber(phone1);
+                String startTime = sdf.format(findMember.getStarttime());
                 String endDate = sdf.format(findMember.getEndtime());
                 String allTotal = findMember.getU();
+                String useTotal = findMember.getT();
+                LocalUser localUser = findMember.getLocalUser();
+                String createUser = localUser.getUsername();
+                String speed = findMember.getD();
+                int times = findMember.getAmount();
                 if (findMember != null){
                     result = "你的订阅地址是："+findMember.getSubUrl();
-                    return result+"\r\n"+"到期时间:【"+endDate+"】"+"\r\n"+"总流量为：【"+allTotal+"】";
+                    return result+"\r\n"+"开始时间:【"+startTime+"】"+"\r\n"+"到期时间:【"+endDate+"】"+"\r\n"+"总流量为:【"+allTotal+"G】"+"\r\n"+"已用流量:【"+useTotal+"G】"+"\r\n"+"创建人是:【"+createUser+"】"+"\r\n"+"是否限速:【"+speed+"】"+"\r\n"+"续费次数:【"+times+"】";
                 }
             }
         }
